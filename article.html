@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>記事を読む | OmuOmu Life</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@300;400;500&family=M+PLUS+Rounded+1c:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap"
+			rel="stylesheet"
+		/>
+		<script src="https://cdn.tailwindcss.com"></script>
+
+		<!-- Supabaseの魔法の道具箱 (CDN) ✨ -->
+		<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+		<script>
+			tailwind.config = {
+				theme: {
+					extend: {
+						colors: {
+							'omu-egg': '#FFD966',
+							'omu-egg-light': '#FFF4C1',
+							'omu-ketchup': '#FF6B6B',
+							'omu-rice': '#FAF9F6',
+							'omu-demi': '#5D4037',
+							'omu-green': '#88D8B0',
+						},
+						fontFamily: {
+							body: ['"M PLUS Rounded 1c"', 'sans-serif'],
+							title: ['"Kiwi Maru"', 'serif'],
+						},
+					},
+				},
+			};
+		</script>
+		<link rel="stylesheet" href="css/style.css" />
+	</head>
+	<body class="flex flex-col min-h-screen text-omu-demi">
+		<header class="wavy-bottom shadow-sm">
+			<div
+				class="container mx-auto max-w-6xl px-6 py-6 flex justify-between items-center"
+			>
+				<a href="index.html" class="flex items-center gap-2 group">
+					<div
+						class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-2xl shadow-inner group-hover:rotate-12 transition-transform"
+					>
+						🍳
+					</div>
+					<h1
+						class="font-title text-2xl md:text-3xl font-bold tracking-wider text-omu-demi"
+					>
+						OmuOmu<span class="text-omu-ketchup">.</span>
+					</h1>
+				</a>
+				<nav class="hidden md:flex gap-8 font-bold text-sm tracking-widest">
+					<a href="index.html" class="hover:text-omu-ketchup transition-colors"
+						>HOME</a
+					>
+					<a href="#" class="hover:text-omu-ketchup transition-colors">ABOUT</a>
+					<a
+						href="index.html#latest"
+						class="hover:text-omu-ketchup transition-colors"
+						>DIARY</a
+					>
+					<a
+						href="#"
+						class="bg-white px-5 py-2 rounded-full text-omu-ketchup shadow-sm hover:shadow-md transition-all"
+						>CONTACT</a
+					>
+				</nav>
+				<button class="md:hidden text-2xl" onclick="toggleMenu()">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="24"
+						height="24"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2.5"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					>
+						<line x1="3" y1="12" x2="21" y2="12"></line>
+						<line x1="3" y1="6" x2="21" y2="6"></line>
+						<line x1="3" y1="18" x2="21" y2="18"></line>
+					</svg>
+				</button>
+			</div>
+		</header>
+
+		<div
+			id="mobile-menu"
+			class="fixed inset-0 bg-omu-egg/95 z-50 transform translate-x-full transition-transform duration-300 flex flex-col justify-center items-center gap-8 text-xl font-bold"
+		>
+			<button
+				class="absolute top-6 right-6 text-3xl text-omu-demi hover:text-white transition-colors"
+				onclick="toggleMenu()"
+			>
+				×
+			</button>
+			<a href="index.html" class="hover:text-white transition-colors">HOME</a>
+			<a href="index.html#latest" class="hover:text-white transition-colors"
+				>DIARY</a
+			>
+			<a
+				href="#"
+				class="bg-white text-omu-ketchup px-8 py-3 rounded-full shadow-md"
+				>CONTACT</a
+			>
+		</div>
+
+		<div
+			id="not-found"
+			class="hidden container mx-auto max-w-2xl py-20 text-center"
+		>
+			<div class="text-6xl mb-4">🍳💦</div>
+			<h2 class="text-2xl font-bold mb-4">記事が見つかりません…</h2>
+			<p class="text-gray-400 mb-6">
+				IDが間違っているか、削除された可能性があります。
+			</p>
+			<a href="index.html" class="text-omu-ketchup underline">トップに戻る</a>
+		</div>
+
+		<main
+			id="article-content"
+			class="hidden container mx-auto max-w-4xl px-6 py-12 flex-grow"
+		>
+			<div class="text-center mb-12">
+				<div
+					class="inline-block bg-white px-4 py-1 rounded-full text-sm font-bold text-omu-ketchup shadow-sm mb-4"
+					id="post-category"
+				>
+					Category
+				</div>
+				<h1
+					class="font-title text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-4"
+					id="post-title"
+				>
+					記事のタイトル
+				</h1>
+				<div
+					class="text-sm text-gray-400 font-bold flex justify-center items-center gap-2"
+				>
+					<span id="post-date">2025.00.00</span><span>•</span><span>Anju</span>
+				</div>
+			</div>
+			<div
+				class="relative w-full h-64 md:h-80 rounded-[40px] mb-12 flex items-center justify-center overflow-hidden shadow-sm"
+				id="post-bg"
+			>
+				<div class="text-8xl md:text-9xl float-icon" id="post-emoji">🍳</div>
+			</div>
+			<div
+				class="bg-white rounded-[40px] p-8 md:p-12 shadow-sm border border-gray-100"
+			>
+				<div
+					class="prose prose-brown max-w-none text-omu-demi leading-loose"
+					id="post-body"
+				>
+					<div class="text-center text-gray-400 py-10">読み込み中...🍳</div>
+				</div>
+			</div>
+			<div class="text-center mt-16">
+				<a
+					href="index.html"
+					class="inline-flex items-center gap-2 bg-omu-demi text-white px-8 py-3 rounded-full font-bold hover:bg-omu-ketchup transition-colors shadow-md transform hover:-translate-y-1"
+				>
+					<span>← 記事一覧に戻る</span>
+				</a>
+			</div>
+		</main>
+
+		<footer
+			class="bg-omu-demi text-omu-rice pt-16 pb-8 rounded-t-[40px] mt-10 relative overflow-hidden"
+		>
+			<div
+				class="absolute top-0 left-0 w-full h-2 bg-omu-ketchup opacity-50"
+			></div>
+			<div class="container mx-auto max-w-6xl px-6">
+				<div
+					class="flex flex-col md:flex-row justify-between items-start gap-10"
+				>
+					<div class="md:w-1/3">
+						<div class="flex items-center gap-3 mb-4">
+							<div
+								class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-2xl"
+							>
+								🐣
+							</div>
+							<h5 class="font-title text-xl font-bold text-omu-egg">
+								OmuOmu Blog.
+							</h5>
+						</div>
+						<p class="text-sm opacity-80 leading-relaxed mb-6">
+							「丁度いい」幸せを見つける場所。<br />ご飯のこと、服のこと、日々のこと。
+						</p>
+					</div>
+					<div class="md:w-1/3">
+						<div class="text-right md:text-left">
+							<a href="index.html" class="text-omu-egg hover:underline"
+								>Top Page</a
+							>
+						</div>
+					</div>
+				</div>
+				<div
+					class="border-t border-white/10 mt-12 pt-8 text-center text-xs opacity-60 font-bold tracking-widest"
+				>
+					© 2025 OmuOmu Blog. All Rights Reserved.
+				</div>
+			</div>
+		</footer>
+
+		<script src="js/script.js"></script>
+	</body>
+</html>

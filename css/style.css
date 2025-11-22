@@ -1,0 +1,92 @@
+body {
+	font-family: 'M PLUS Rounded 1c', sans-serif;
+	background-color: #faf9f6;
+	color: #5d4037;
+}
+
+/* ヘッダーのなみなみ装飾 */
+.wavy-bottom {
+	position: relative;
+	padding-bottom: 50px;
+	background-color: #ffd966;
+	border-bottom-left-radius: 30px;
+	border-bottom-right-radius: 30px;
+}
+
+/* カードのホバーエフェクト */
+.blog-card {
+	transition: all 0.3s ease;
+}
+.blog-card:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 10px 20px rgba(93, 64, 55, 0.15);
+}
+
+/* ケチャップボタンのアニメーション */
+.btn-ketchup {
+	position: relative;
+	overflow: hidden;
+	z-index: 1;
+}
+.btn-ketchup::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 0%;
+	height: 100%;
+	background-color: rgba(255, 255, 255, 0.2);
+	transition: all 0.3s ease;
+	z-index: -1;
+}
+.btn-ketchup:hover::after {
+	width: 100%;
+}
+
+/* 浮かぶアニメーション */
+@keyframes float {
+	0% {
+		transform: translateY(0px);
+	}
+	50% {
+		transform: translateY(-10px);
+	}
+	100% {
+		transform: translateY(0px);
+	}
+}
+.float-icon {
+	animation: float 4s ease-in-out infinite;
+}
+
+/* =========================================
+   📝 記事本文のデザイン (Typography)
+   ========================================= */
+
+/* 記事内の h2 見出し */
+#post-body h2 {
+	font-family: 'Kiwi Maru', serif;
+	font-size: 1.8rem;
+	font-weight: bold;
+	margin-top: 3rem;
+	margin-bottom: 1.5rem;
+	padding-bottom: 0.5rem;
+	border-bottom: 3px dashed #ffd966; /* オムライス色の点線 */
+	color: #5d4037;
+}
+
+/* 記事内の段落 */
+#post-body p {
+	margin-bottom: 2rem;
+	line-height: 2; /* ゆったり読みやすく */
+	font-size: 1.05rem;
+}
+
+/* 記事内の太字 */
+#post-body strong {
+	color: #ff6b6b; /* ケチャップ色で強調！ */
+	background: linear-gradient(
+		transparent 70%,
+		#fff4c1 70%
+	); /* 黄色いマーカー */
+}
