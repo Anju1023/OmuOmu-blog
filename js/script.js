@@ -9,6 +9,8 @@ const SUPABASE_KEY =
 	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1zaWFveXd2bm51ZHd5d21pbWpmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM3OTAxOTEsImV4cCI6MjA3OTM2NjE5MX0.1OQF6zmEZBL4mmsmQcwc_3LuP7bHllacwejlb9dsNzg';
 
 // Supabaseのクライアント（接続係）を作成
+// ここで window.supabase があるかチェックしてるんやけど、
+// article.html にスクリプトがないと null になっちゃうねん💦
 const supabase = window.supabase
 	? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
 	: null;
@@ -26,7 +28,7 @@ function getQueryParam(param) {
 }
 
 // ==========================================
-// 📝 記事データを取得する関数 (名探偵版🕵️‍♀️)
+// 📝 記事データを取得する関数
 // ==========================================
 async function fetchPosts() {
 	if (!supabase) return [];
@@ -43,20 +45,24 @@ async function fetchPosts() {
 	return data;
 }
 
-// 単一の記事を取得する関数 (ここを強化したで！)
+// 単一の記事を取得する関数
 async function fetchPostById(id) {
-	if (!supabase) return null;
+	if (!supabase) {
+		alert(
+			'大変！！article.html に Supabaseの道具箱（スクリプト）が入ってないみたい！💦\n\narticle.html の <head> の中を確認してな！'
+		);
+		return null;
+	}
 
-	console.log('探しているID:', id); // コンソールで確認用
+	console.log('探しているID:', id);
 
 	const { data, error } = await supabase
 		.from('posts')
 		.select('*')
 		.eq('id', id)
-		.single(); // 1つだけ取得
+		.single();
 
 	if (error) {
-		// 🚨 ここでエラー内容を教えてもらう！
 		alert(
 			'事件発生！記事が見つからない原因はこれや！\n\n' +
 				error.message +
@@ -78,6 +84,12 @@ async function renderPosts() {
 	const container = document.getElementById('blog-posts-container');
 	if (!container) return;
 
+	if (!supabase) {
+		container.innerHTML =
+			'<div class="col-span-full text-center text-red-500 font-bold">⚠️ index.html に Supabaseのスクリプトタグがないかも！確認して！</div>';
+		return;
+	}
+
 	const posts = await fetchPosts();
 
 	if (posts.length === 0) {
@@ -87,14 +99,17 @@ async function renderPosts() {
 	}
 
 	let html = '';
-	posts.forEach((post) => {
-		// カラム名のゆらぎを吸収 (color_class でも colorClass でもOKに)
+	// ✨ ここ変更！index (i) を使って、アニメーションの遅延時間を計算するで！
+	posts.forEach((post, index) => {
 		const colorClass =
 			post.color_class || post.colorClass || 'bg-omu-egg-light';
 		const emojiClass = post.emoji_class || post.emojiClass || 'text-4xl';
 
+		// 0.1秒ずつ遅らせる (max 0.5秒くらいまで)
+		const delay = Math.min(index * 0.1, 0.5);
+
 		html += `
-        <article class="blog-card bg-white rounded-[30px] overflow-hidden shadow-sm border border-gray-100 flex flex-col h-full">
+        <article class="blog-card bg-white rounded-[30px] overflow-hidden shadow-sm border border-gray-100 flex flex-col h-full animate-slide-up" style="animation-delay: ${delay}s">
             <a href="article.html?id=${post.id}" class="block h-full flex flex-col">
                 <div class="relative h-56 bg-gray-200 overflow-hidden">
                     <div class="w-full h-full ${colorClass} flex items-center justify-center ${emojiClass}">${post.emoji}</div>
@@ -131,16 +146,16 @@ async function renderArticle() {
 
 	const id = getQueryParam('id');
 	if (!id) {
-		// IDがない場合
 		document.getElementById('not-found').classList.remove('hidden');
 		return;
 	}
 
-	// データを取得
 	const post = await fetchPostById(id);
 
 	if (post) {
+		// ✨ ここ変更！記事全体をふわっと表示させるクラスを追加！
 		articleContent.classList.remove('hidden');
+		articleContent.classList.add('animate-fade-in');
 
 		document.getElementById('post-title').textContent = post.title;
 		document.getElementById('post-category').textContent = post.category;
@@ -155,7 +170,6 @@ async function renderArticle() {
 		document.getElementById('post-body').innerHTML = post.content;
 		document.title = `${post.title} | OmuOmu Life`;
 	} else {
-		// 記事が見つからない（nullが返ってきた）場合
 		document.getElementById('not-found').classList.remove('hidden');
 	}
 }

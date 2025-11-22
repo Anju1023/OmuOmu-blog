@@ -4,6 +4,16 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>OmuOmu Life | オムライスカラーの日常</title>
+		<meta
+			name="description"
+			content="オムライスのような温かい日常を綴るブログ。カフェ巡り、ファッション、ライフスタイルなど。"
+		/>
+
+		<!-- 🍳 ファビコンを追加！ -->
+		<link
+			rel="icon"
+			href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍳</text></svg>"
+		/>
 
 		<!-- Google Fonts -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -41,6 +51,7 @@
 			};
 		</script>
 
+		<!-- ✨ 変更: cssフォルダを見るようにしたで！ -->
 		<link rel="stylesheet" href="css/style.css" />
 	</head>
 	<body class="flex flex-col min-h-screen text-omu-demi">
@@ -63,7 +74,6 @@
 				</a>
 				<nav class="hidden md:flex gap-8 font-bold text-sm tracking-widest">
 					<a href="#" class="hover:text-omu-ketchup transition-colors">HOME</a>
-					<!-- ✨ ここ！about.html にリンクしたで！ -->
 					<a href="about.html" class="hover:text-omu-ketchup transition-colors"
 						>ABOUT</a
 					>
@@ -184,7 +194,6 @@
 				class="hover:text-white transition-colors"
 				>HOME</a
 			>
-			<!-- ✨ ここも！about.html にリンク！ -->
 			<a href="about.html" class="hover:text-white transition-colors">ABOUT</a>
 			<a
 				href="#latest"
@@ -286,7 +295,6 @@
 										>Home</a
 									>
 								</li>
-								<!-- ✨ ここも！about.html にリンク！ -->
 								<li>
 									<a
 										href="about.html"
@@ -295,7 +303,7 @@
 									>
 								</li>
 								<li>
-									<a href="#" class="hover:text-omu-egg transition-colors"
+									<a href="#latest" class="hover:text-omu-egg transition-colors"
 										>Diary</a
 									>
 								</li>
@@ -311,7 +319,7 @@
 			</div>
 		</footer>
 
-		<!-- JSファイルの読み込み (posts.jsは削除！Supabaseにお任せ！) -->
+		<!-- ✨ 変更: jsフォルダを見るようにしたで！ -->
 		<script src="js/script.js"></script>
 	</body>
 </html>

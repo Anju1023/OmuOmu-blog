@@ -1,7 +1,14 @@
+/* ✨ ここに追加！ページ内リンクをするする〜っと動かす魔法 */
+html {
+	scroll-behavior: smooth;
+}
+
 body {
 	font-family: 'M PLUS Rounded 1c', sans-serif;
 	background-color: #faf9f6;
 	color: #5d4037;
+	/* ページ全体をふわっと表示させる */
+	animation: fadeIn 0.8s ease-out;
 }
 
 /* ヘッダーのなみなみ装飾 */
@@ -89,4 +96,35 @@ body {
 		transparent 70%,
 		#fff4c1 70%
 	); /* 黄色いマーカー */
+}
+
+/* =========================================
+   ✨ スクロールアニメーション (Update!)
+   ========================================= */
+
+/* ページ全体をふわっと表示（これはそのまま） */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+.animate-fade-in {
+	animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* 🚀 ここ変更！スクロールで出てくる用のクラス */
+.scroll-fade-up {
+	opacity: 0; /* 最初は透明 */
+	transform: translateY(40px); /* ちょっと下に沈めておく */
+	/* じわ〜っと動く設定 (バネっぽい動きで可愛く！) */
+	transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 画面に入った時につけるクラス */
+.scroll-fade-up.is-show {
+	opacity: 1; /* 見えるように！ */
+	transform: translateY(0); /* 元の位置に！ */
 }
