@@ -6,8 +6,8 @@
 
   - `index.html` - メインの HTML ファイル
   - `posts.js` - 記事データ（JSON 風）
-  - `js/script.js` - クライアントサイドのスクリプト
-  - `css/style.css` - スタイルシート
+  - `js/js/script.js` - クライアントサイドのスクリプト
+  - `css/css/style.css` - スタイルシート
 
 - 動作方法:
   1. ローカルでファイルを開く: ブラウザで `index.html` を直接開いてください。
@@ -28,8 +28,8 @@ python -m http.server 8000
 **主なファイル構成**
 - `index.html` : トップページ（一覧、導入）
 - `article.html` : 記事テンプレート（個別記事ページ）
-- `css/style.css` : サイト全体のスタイル
-- `js/script.js` : クライアントサイドの挙動（必要に応じて編集）
+- `css/css/style.css` : サイト全体のスタイル
+- `js/js/script.js` : クライアントサイドの挙動（必要に応じて編集）
 - `LICENSE` : ライセンス（MIT）
 
 **動作確認 / ローカルでのプレビュー**
@@ -48,8 +48,8 @@ npx http-server -p 8000
 **記事の追加・編集**
 
 - 手軽に追加する場合は `article.html` をコピーして `article-<slug>.html` のように作成し、`index.html` にリンクを追加してください。
-- デザインを変更する場合は `css/style.css` を編集します。
-- 動的な挙動を追加する場合は `js/script.js` を編集してください。
+- デザインを変更する場合は `css/css/style.css` を編集します。
+- 動的な挙動を追加する場合は `js/js/script.js` を編集してください。
 
 **貢献・問い合わせ**
 
@@ -62,4 +62,4 @@ npx http-server -p 8000
 
 ---
 
-まずは `index.html` と `css/style.css` を開き、簡単な変更から試してみてください。README を更新したばかりなので、必要なら追加の説明を追記します。
+まずは `index.html` と `css/css/style.css` を開き、簡単な変更から試してみてください。README を更新したばかりなので、必要なら追加の説明を追記します。
