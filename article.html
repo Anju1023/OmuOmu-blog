@@ -39,7 +39,6 @@
 				},
 			};
 		</script>
-		<!-- ✨ 変更 -->
 		<link rel="stylesheet" href="css/style.css" />
 	</head>
 	<body class="flex flex-col min-h-screen text-omu-demi">
@@ -160,8 +159,10 @@
 			>
 				<div class="text-8xl md:text-9xl float-icon" id="post-emoji">🍳</div>
 			</div>
+
+			<!-- 記事本文エリア -->
 			<div
-				class="bg-white rounded-[40px] p-8 md:p-12 shadow-sm border border-gray-100"
+				class="bg-white rounded-[40px] p-8 md:p-12 shadow-sm border border-gray-100 mb-12"
 			>
 				<div
 					class="prose prose-brown max-w-none text-omu-demi leading-loose"
@@ -170,6 +171,81 @@
 					<div class="text-center text-gray-400 py-10">読み込み中...🍳</div>
 				</div>
 			</div>
+
+			<!-- ✨ NEW! シェアボタンエリア -->
+			<div class="max-w-2xl mx-auto mb-16 text-center">
+				<p
+					class="text-omu-ketchup font-bold text-sm tracking-widest mb-6 opacity-70"
+				>
+					SHARE THIS POST
+				</p>
+				<div class="flex justify-center gap-4">
+					<!-- X (Twitter) -->
+					<a
+						id="share-x"
+						href="#"
+						target="_blank"
+						class="w-12 h-12 bg-black text-white rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-md"
+						title="Xでシェア"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="currentColor"
+						>
+							<path
+								d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+							/>
+						</svg>
+					</a>
+					<!-- LINE -->
+					<a
+						id="share-line"
+						href="#"
+						target="_blank"
+						class="w-12 h-12 bg-[#06C755] text-white rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-md"
+						title="LINEで送る"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="currentColor"
+						>
+							<path
+								d="M12 2.5c-5.52 0-10 3.58-10 8 0 2.6 1.54 4.91 3.96 6.35-.18.67-.65 2.38-.74 2.87-.08.47.21.92.57.55.42-.43 2.35-2.04 3.19-2.74.96.27 1.98.42 3.02.42 5.52 0 10-3.58 10-8s-4.48-8-10-8z"
+							/>
+						</svg>
+					</a>
+					<!-- Copy Link -->
+					<button
+						onclick="copyLink()"
+						class="w-12 h-12 bg-gray-100 text-omu-demi rounded-full flex items-center justify-center hover:bg-omu-egg hover:text-white hover:scale-110 transition-all shadow-md"
+						title="リンクをコピー"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+							<path
+								d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+							></path>
+						</svg>
+					</button>
+				</div>
+			</div>
+
 			<div class="text-center mt-16">
 				<a
 					href="index.html"
@@ -221,7 +297,6 @@
 			</div>
 		</footer>
 
-		<!-- ✨ 変更 -->
 		<script src="js/script.js"></script>
 	</body>
 </html>

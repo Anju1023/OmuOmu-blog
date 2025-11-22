@@ -99,17 +99,13 @@ async function renderPosts() {
 	}
 
 	let html = '';
-	// ✨ ここ変更！index (i) を使って、アニメーションの遅延時間を計算するで！
 	posts.forEach((post, index) => {
 		const colorClass =
 			post.color_class || post.colorClass || 'bg-omu-egg-light';
 		const emojiClass = post.emoji_class || post.emojiClass || 'text-4xl';
 
-		// 0.1秒ずつ遅らせる (max 0.5秒くらいまで)
-		const delay = Math.min(index * 0.1, 0.5);
-
 		html += `
-        <article class="blog-card bg-white rounded-[30px] overflow-hidden shadow-sm border border-gray-100 flex flex-col h-full animate-slide-up" style="animation-delay: ${delay}s">
+        <article class="blog-card bg-white rounded-[30px] overflow-hidden shadow-sm border border-gray-100 flex flex-col h-full scroll-fade-up">
             <a href="article.html?id=${post.id}" class="block h-full flex flex-col">
                 <div class="relative h-56 bg-gray-200 overflow-hidden">
                     <div class="w-full h-full ${colorClass} flex items-center justify-center ${emojiClass}">${post.emoji}</div>
@@ -138,6 +134,33 @@ async function renderPosts() {
         `;
 	});
 	container.innerHTML = html;
+
+	setupScrollReveal();
+}
+
+// 🕵️‍♀️ スクロール監視員の設定関数
+function setupScrollReveal() {
+	const observer = new IntersectionObserver(
+		(entries) => {
+			entries.forEach((entry, index) => {
+				if (entry.isIntersecting) {
+					setTimeout(() => {
+						entry.target.classList.add('is-show');
+					}, index * 100);
+					observer.unobserve(entry.target);
+				}
+			});
+		},
+		{
+			rootMargin: '0px',
+			threshold: 0.1,
+		}
+	);
+
+	const targets = document.querySelectorAll('.scroll-fade-up');
+	targets.forEach((target) => {
+		observer.observe(target);
+	});
 }
 
 async function renderArticle() {
@@ -153,7 +176,6 @@ async function renderArticle() {
 	const post = await fetchPostById(id);
 
 	if (post) {
-		// ✨ ここ変更！記事全体をふわっと表示させるクラスを追加！
 		articleContent.classList.remove('hidden');
 		articleContent.classList.add('animate-fade-in');
 
@@ -169,10 +191,42 @@ async function renderArticle() {
 
 		document.getElementById('post-body').innerHTML = post.content;
 		document.title = `${post.title} | OmuOmu Life`;
+
+		// ✨ シェアボタンのURLを設定するで！
+		setupShareButtons(post.title);
 	} else {
 		document.getElementById('not-found').classList.remove('hidden');
 	}
 }
+
+// ✨ シェアボタンの設定関数 (NEW!)
+function setupShareButtons(title) {
+	const currentUrl = window.location.href;
+	const shareText = encodeURIComponent(`${title} | OmuOmu Life`); // タイトルをURL用に変換
+
+	// X (Twitter)
+	const xBtn = document.getElementById('share-x');
+	if (xBtn)
+		xBtn.href = `https://twitter.com/intent/tweet?text=${shareText}&url=${currentUrl}`;
+
+	// LINE
+	const lineBtn = document.getElementById('share-line');
+	if (lineBtn)
+		lineBtn.href = `https://social-plugins.line.me/lineit/share?url=${currentUrl}`;
+}
+
+// ✨ リンクコピー関数 (NEW!)
+window.copyLink = function () {
+	const currentUrl = window.location.href;
+	navigator.clipboard
+		.writeText(currentUrl)
+		.then(() => {
+			alert('リンクをコピーしたえ〜！🍳\n友達に送ってな！');
+		})
+		.catch((err) => {
+			console.error('コピー失敗:', err);
+		});
+};
 
 window.onload = function () {
 	renderPosts();
