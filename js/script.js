@@ -30,10 +30,13 @@ function getQueryParam(param) {
 // ==========================================
 async function fetchPosts() {
 	if (!supabase) return [];
+
 	const { data, error } = await supabase
 		.from('posts')
 		.select('*')
+		.eq('status', 'published') // ✨ ここ変更！「公開済み」だけ取ってくる！
 		.order('id', { ascending: false });
+
 	if (error) {
 		console.error('一覧取得エラー:', error);
 		return [];
@@ -46,11 +49,16 @@ async function fetchPostById(id) {
 		alert('Supabaseの設定エラーや！article.htmlのスクリプトを確認して！');
 		return null;
 	}
+
+	// 記事詳細も、一応ステータスは見ずに取得するけど、
+	// 必要なら .eq('status', 'published') をつけてもOK！
+	// 今は「URLを知ってれば下書き確認できる」仕様にしておくね！
 	const { data, error } = await supabase
 		.from('posts')
 		.select('*')
 		.eq('id', id)
 		.single();
+
 	if (error) {
 		console.error('記事取得エラー:', error);
 		return null;
@@ -88,8 +96,9 @@ async function renderPosts() {
 	const posts = await fetchPosts();
 
 	if (posts.length === 0) {
+		// ✨ メッセージを優しく変更
 		container.innerHTML =
-			'<div class="col-span-full text-center text-gray-400">記事がないか、設定ミスかも！🍳</div>';
+			'<div class="col-span-full text-center text-gray-400 py-10">まだ記事がないか、全部下書き中かも…？🐣<br>更新を楽しみに待っててね！</div>';
 		return;
 	}
 
@@ -183,7 +192,6 @@ async function renderArticle() {
 		updateMetaTags(post.title, post.excerpt);
 		setupShareButtons(post.title);
 
-		// ✨ ここ！！Prism.jsに「色塗りして！」ってお願いする
 		if (window.Prism) {
 			Prism.highlightAll();
 		}
