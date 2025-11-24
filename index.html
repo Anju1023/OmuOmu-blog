@@ -4,7 +4,6 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>OmuOmu Life | オムライスカラーの日常</title>
-		<!-- ✨ SEO対策: 検索結果に出るブログの説明文 -->
 		<meta
 			name="description"
 			content="あんじゅの雑多ブログ「OmuOmu Life」。カフェ巡り、ファッションから、ゲームやプログラミングの話まで。オムライスカラーの温かい日常をお届けします。"
@@ -33,7 +32,6 @@
 							'omu-rice': '#FAF9F6',
 							'omu-demi': '#5D4037',
 							'omu-green': '#88D8B0',
-							/* ✨ 新色もここに追加！ */
 							'omu-blue': '#74b9ff',
 							'omu-purple': '#a29bfe',
 						},
@@ -127,15 +125,41 @@
 							>ゲーム / プログラミング / カフェ巡り / ライフスタイル</span
 						>
 					</p>
-					<div class="flex gap-4 justify-center md:justify-start">
-						<a
-							href="#latest"
-							class="btn-ketchup bg-omu-ketchup text-white px-8 py-3 rounded-full font-bold shadow-lg shadow-red-200 transform active:scale-95 transition-transform"
+
+					<!-- 🔍 検索ボックス (New!) -->
+					<div class="flex gap-2 justify-center md:justify-start mt-8 max-w-md">
+						<div class="flex-1 relative search-box rounded-full">
+							<input
+								type="text"
+								id="search-input"
+								placeholder="記事を探す... (例: Python)"
+								class="w-full bg-white border-2 border-gray-200 rounded-full px-6 py-3 pl-12 focus:outline-none font-bold text-sm text-omu-demi placeholder-gray-300"
+							/>
+							<svg
+								class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-300"
+								xmlns="http://www.w3.org/2000/svg"
+								width="20"
+								height="20"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2.5"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							>
+								<circle cx="11" cy="11" r="8"></circle>
+								<line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+							</svg>
+						</div>
+						<button
+							onclick="searchArticles()"
+							class="bg-omu-demi text-white px-6 py-3 rounded-full font-bold hover:bg-omu-ketchup transition-colors shadow-md"
 						>
-							記事を読む
-						</a>
+							Go
+						</button>
 					</div>
 				</div>
+
 				<div class="md:w-1/2 mt-10 md:mt-0 relative flex justify-center">
 					<div
 						class="relative w-64 h-64 md:w-80 md:h-80 bg-white rounded-full p-6 shadow-xl flex items-center justify-center float-icon border-4 border-omu-egg/30"
@@ -173,6 +197,7 @@
 			</div>
 		</header>
 
+		<!-- モバイルメニュー -->
 		<div
 			id="mobile-menu"
 			class="fixed inset-0 bg-omu-egg/95 z-50 transform translate-x-full transition-transform duration-300 flex flex-col justify-center items-center gap-8 text-xl font-bold"
@@ -204,21 +229,40 @@
 			>
 		</div>
 
+		<!-- メインコンテンツ -->
 		<main class="container mx-auto max-w-6xl px-6 py-16 flex-grow" id="latest">
-			<div class="text-center mb-16">
+			<!-- 🏷️ カテゴリ一覧エリア (Update!) -->
+			<!-- ✨ ここ変更！ pb-4 を py-4 に変えて、上にも余白を作ったで！ -->
+			<div class="mb-12 overflow-x-auto py-4">
+				<div class="flex gap-3 md:justify-center min-w-max" id="category-list">
+					<!-- ここにJSでボタンが追加されるよ！ -->
+					<button
+						class="category-btn active border-2 border-omu-egg bg-omu-egg text-white px-5 py-2 rounded-full font-bold text-sm shadow-sm"
+					>
+						All
+					</button>
+					<!-- 他のカテゴリボタンはJSで生成 -->
+				</div>
+			</div>
+
+			<!-- セクションタイトル (検索結果とかを表示) -->
+			<div class="text-center mb-12">
 				<span
 					class="text-omu-ketchup font-bold tracking-widest text-sm uppercase"
+					id="list-label"
 					>Recent Posts</span
 				>
 				<h3 class="font-title text-3xl md:text-4xl font-bold mt-2">
 					<span
 						class="bg-gradient-to-t from-omu-egg to-transparent bg-[length:100%_40%] bg-no-repeat bg-bottom px-2"
+						id="list-title"
 					>
 						最新の記事
 					</span>
 				</h3>
 			</div>
 
+			<!-- 記事グリッド -->
 			<div
 				id="blog-posts-container"
 				class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 min-h-[200px]"
@@ -228,26 +272,33 @@
 				</div>
 			</div>
 
-			<div class="text-center mt-16">
-				<a
-					href="#"
-					class="inline-flex items-center justify-center w-12 h-12 rounded-full border-2 border-omu-demi text-omu-demi hover:bg-omu-demi hover:text-white transition-all duration-300"
+			<!-- 📖 ページネーション (New!) -->
+			<div
+				class="flex justify-center items-center gap-6 mt-16"
+				id="pagination-area"
+			>
+				<button
+					id="prev-btn"
+					onclick="changePage(-1)"
+					class="pagination-btn w-12 h-12 rounded-full border-2 border-omu-demi flex items-center justify-center disabled:opacity-30"
+					disabled
 				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="24"
-						height="24"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="2"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-					>
-						<line x1="12" y1="5" x2="12" y2="19"></line>
-						<polyline points="19 12 12 19 5 12"></polyline>
-					</svg>
-				</a>
+					←
+				</button>
+				<span class="font-bold text-lg font-title"
+					><span id="current-page">1</span>
+					<span class="text-gray-400 text-sm"
+						>/ <span id="total-pages">1</span></span
+					></span
+				>
+				<button
+					id="next-btn"
+					onclick="changePage(1)"
+					class="pagination-btn w-12 h-12 rounded-full border-2 border-omu-demi flex items-center justify-center disabled:opacity-30"
+					disabled
+				>
+					→
+				</button>
 			</div>
 		</main>
 

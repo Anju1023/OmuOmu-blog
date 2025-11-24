@@ -19,8 +19,7 @@
 		<!-- Supabaseの魔法の道具箱 -->
 		<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-		<!-- ✨ Prism.js (シンタックスハイライト) の導入！ -->
-		<!-- テーマは「Tomorrow Night」っていう、目に優しくておしゃれなやつにしたで！ -->
+		<!-- ✨ Prism.js (シンタックスハイライト) -->
 		<link
 			rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
@@ -173,6 +172,10 @@
 			<div
 				class="bg-white rounded-[40px] p-8 md:p-12 shadow-sm border border-gray-100 mb-12"
 			>
+				<!-- ✨ 目次エリア (New!) -->
+				<!-- ここにJSで目次が生成されるよ！ -->
+				<div id="toc-container" class="hidden"></div>
+
 				<!-- line-numbers クラスをつけると行番号が出るよ！ -->
 				<div
 					class="prose prose-brown max-w-none text-omu-demi line-numbers"

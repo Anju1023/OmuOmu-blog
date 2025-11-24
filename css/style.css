@@ -92,7 +92,94 @@ body {
 }
 
 /* =========================================
-   📝 記事本文のデザイン (完全版！)
+   🔍 検索・カテゴリ・ページネーション
+   ========================================= */
+
+/* 検索ボックス */
+.search-box {
+	transition: all 0.3s;
+}
+.search-box:focus-within {
+	box-shadow: 0 0 0 3px rgba(255, 217, 102, 0.5); /* オムライス色の光 */
+	border-color: #ffd966;
+}
+
+/* カテゴリボタン */
+.category-btn {
+	transition: all 0.2s;
+	white-space: nowrap; /* 折り返さない */
+}
+.category-btn:hover {
+	transform: translateY(-2px);
+}
+.category-btn.active {
+	background-color: #ff6b6b; /* 選択中はケチャップ色 */
+	color: white;
+	border-color: #ff6b6b;
+}
+
+/* ページネーションボタン */
+.pagination-btn {
+	transition: all 0.2s;
+}
+.pagination-btn:hover:not(:disabled) {
+	background-color: #ffd966;
+	color: #5d4037;
+}
+.pagination-btn:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+/* =========================================
+   📑 目次 (New!)
+   ========================================= */
+.toc-container {
+	background-color: #fff9e5; /* 薄い卵色 */
+	border: 2px dashed #ffd966;
+	border-radius: 20px;
+	padding: 1.5rem;
+	margin-bottom: 3rem;
+}
+.toc-title {
+	font-weight: bold;
+	color: #5d4037;
+	margin-bottom: 1rem;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+.toc-list {
+	list-style: none !important;
+	padding-left: 0 !important;
+	margin: 0 !important;
+}
+.toc-list li {
+	margin-bottom: 0.5rem !important;
+	padding-left: 0 !important;
+}
+.toc-list li::before {
+	content: none !important; /* チェックマーク消す */
+}
+.toc-list a {
+	color: #5d4037 !important;
+	text-decoration: none !important;
+	transition: color 0.2s;
+	font-size: 0.95rem;
+}
+.toc-list a:hover {
+	color: #ff6b6b !important;
+	background-color: transparent !important;
+	text-decoration: underline !important;
+}
+/* h3レベルのインデント */
+.toc-indent {
+	margin-left: 1.5rem;
+	font-size: 0.9rem;
+}
+
+/* =========================================
+   📝 記事本文のデザイン
    ========================================= */
 
 /* 全体の行間など */
@@ -112,6 +199,8 @@ body {
 	padding-bottom: 0.5rem;
 	border-bottom: 3px dashed #ffd966; /* オムライス色の点線 */
 	color: #5d4037;
+	/* スクロールした時にヘッダーに隠れないように調整 */
+	scroll-margin-top: 100px;
 }
 
 /* h3 見出し */
@@ -124,6 +213,7 @@ body {
 	background-color: #fff9e5; /* 薄い卵色 */
 	border-left: 5px solid #ffd966;
 	border-radius: 0 10px 10px 0;
+	scroll-margin-top: 100px;
 }
 
 /* 段落 */
@@ -141,13 +231,13 @@ body {
 	font-weight: bold;
 }
 
-/* ✨ 打ち消し線 (New!) */
+/* 打ち消し線 */
 #post-body del {
 	color: #999;
 	text-decoration-thickness: 2px;
 }
 
-/* ✨ 区切り線 (New!) */
+/* 区切り線 */
 #post-body hr {
 	border: 0;
 	border-top: 3px dashed #ffd966;
@@ -213,17 +303,23 @@ body {
 }
 
 /* =========================================
-   💻 テック記事用のデザイン (Prism.js対応)
+   💻 テック記事用のデザイン (Prism.js + Copy Button)
    ========================================= */
 
-/* Prism.js が適用される前のコードブロック */
+/* コードブロックの親要素（ボタン配置用） */
+.code-block-wrapper {
+	position: relative;
+	margin: 2rem 0;
+}
+
+/* Prism.js */
 pre {
 	background-color: #2d2d2d;
 	color: #ccc;
 	padding: 1.5rem;
 	border-radius: 0.8rem;
 	overflow-x: auto;
-	margin: 2rem 0;
+	margin: 0; /* wrapperでマージン取るので0に */
 	font-family: 'Menlo', 'Monaco', 'Consolas', monospace;
 	font-size: 0.9rem;
 	line-height: 1.6;
@@ -241,4 +337,109 @@ pre {
 	font-size: 0.9em;
 	font-weight: bold;
 	border: 1px solid #ffd966;
+}
+
+/* ✨ コピーボタン (New!) */
+.copy-code-btn {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	background-color: rgba(255, 255, 255, 0.1);
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	color: #ccc;
+	padding: 4px 8px;
+	border-radius: 4px;
+	font-size: 0.75rem;
+	cursor: pointer;
+	transition: all 0.2s;
+	z-index: 10;
+}
+.copy-code-btn:hover {
+	background-color: #ffd966;
+	color: #5d4037;
+	border-color: #ffd966;
+}
+
+/* =========================================
+   ✨ ローディングアニメーション
+   ========================================= */
+
+/* フライパンを振る動き */
+@keyframes pan-flip {
+	0%,
+	100% {
+		transform: rotate(0deg) translateY(0);
+	}
+	25% {
+		transform: rotate(-15deg) translateY(-5px);
+	}
+	50% {
+		transform: rotate(0deg) translateY(0);
+	}
+	75% {
+		transform: rotate(5deg) translateY(-2px);
+	}
+}
+
+/* 湯気が出る動き */
+@keyframes steam {
+	0% {
+		transform: translateY(0) scale(1);
+		opacity: 0.8;
+	}
+	100% {
+		transform: translateY(-20px) scale(1.5);
+		opacity: 0;
+	}
+}
+
+.loading-pan {
+	display: inline-block;
+	font-size: 3rem;
+	animation: pan-flip 1.5s ease-in-out infinite;
+	transform-origin: bottom left;
+}
+
+.loading-steam {
+	position: absolute;
+	top: -20px;
+	left: 50%;
+	font-size: 1.5rem;
+	animation: steam 2s ease-out infinite;
+	opacity: 0;
+}
+.loading-steam:nth-child(2) {
+	animation-delay: 0.5s;
+	left: 30%;
+}
+.loading-steam:nth-child(3) {
+	animation-delay: 1s;
+	left: 70%;
+}
+
+/* ローディングコンテナ */
+.loading-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 4rem 0;
+	color: #ffd966; /* オムライス色 */
+}
+.loading-text {
+	margin-top: 1rem;
+	font-weight: bold;
+	color: #5d4037; /* デミグラス色 */
+	font-size: 0.9rem;
+	letter-spacing: 0.1em;
+	animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.5;
+	}
 }
