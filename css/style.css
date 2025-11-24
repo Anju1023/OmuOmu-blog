@@ -1,4 +1,4 @@
-/* ✨ ここに追加！ページ内リンクをするする〜っと動かす魔法 */
+/* ✨ ページ内リンクをするする〜っと動かす魔法 */
 html {
 	scroll-behavior: smooth;
 }
@@ -7,7 +7,6 @@ body {
 	font-family: 'M PLUS Rounded 1c', sans-serif;
 	background-color: #faf9f6;
 	color: #5d4037;
-	/* ページ全体をふわっと表示させる */
 	animation: fadeIn 0.8s ease-out;
 }
 
@@ -67,42 +66,8 @@ body {
 }
 
 /* =========================================
-   📝 記事本文のデザイン (Typography)
+   ✨ スクロールアニメーション
    ========================================= */
-
-/* 記事内の h2 見出し */
-#post-body h2 {
-	font-family: 'Kiwi Maru', serif;
-	font-size: 1.8rem;
-	font-weight: bold;
-	margin-top: 3rem;
-	margin-bottom: 1.5rem;
-	padding-bottom: 0.5rem;
-	border-bottom: 3px dashed #ffd966; /* オムライス色の点線 */
-	color: #5d4037;
-}
-
-/* 記事内の段落 */
-#post-body p {
-	margin-bottom: 2rem;
-	line-height: 2; /* ゆったり読みやすく */
-	font-size: 1.05rem;
-}
-
-/* 記事内の太字 */
-#post-body strong {
-	color: #ff6b6b; /* ケチャップ色で強調！ */
-	background: linear-gradient(
-		transparent 70%,
-		#fff4c1 70%
-	); /* 黄色いマーカー */
-}
-
-/* =========================================
-   ✨ スクロールアニメーション (Update!)
-   ========================================= */
-
-/* ページ全体をふわっと表示（これはそのまま） */
 @keyframes fadeIn {
 	from {
 		opacity: 0;
@@ -115,60 +80,165 @@ body {
 	animation: fadeIn 0.8s ease-out forwards;
 }
 
-/* 🚀 ここ変更！スクロールで出てくる用のクラス */
 .scroll-fade-up {
-	opacity: 0; /* 最初は透明 */
-	transform: translateY(40px); /* ちょっと下に沈めておく */
-	/* じわ〜っと動く設定 (バネっぽい動きで可愛く！) */
+	opacity: 0;
+	transform: translateY(40px);
 	transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* 画面に入った時につけるクラス */
 .scroll-fade-up.is-show {
-	opacity: 1; /* 見えるように！ */
-	transform: translateY(0); /* 元の位置に！ */
+	opacity: 1;
+	transform: translateY(0);
 }
 
 /* =========================================
-   💻 テック記事用のデザイン (New!)
+   📝 記事本文のデザイン (完全版！)
    ========================================= */
 
-/* コードブロック（黒板風） */
-pre {
-	background-color: #2d3436; /* 黒板色 */
-	color: #dfe6e9; /* チョーク色 */
+/* 全体の行間など */
+#post-body {
+	line-height: 1.9;
+	font-size: 1.05rem;
+	color: #5d4037;
+}
+
+/* h2 見出し */
+#post-body h2 {
+	font-family: 'Kiwi Maru', serif;
+	font-size: 1.8rem;
+	font-weight: bold;
+	margin-top: 3.5rem;
+	margin-bottom: 1.5rem;
+	padding-bottom: 0.5rem;
+	border-bottom: 3px dashed #ffd966; /* オムライス色の点線 */
+	color: #5d4037;
+}
+
+/* h3 見出し */
+#post-body h3 {
+	font-size: 1.4rem;
+	font-weight: bold;
+	margin-top: 2.5rem;
+	margin-bottom: 1rem;
+	padding: 0.5rem 1rem;
+	background-color: #fff9e5; /* 薄い卵色 */
+	border-left: 5px solid #ffd966;
+	border-radius: 0 10px 10px 0;
+}
+
+/* 段落 */
+#post-body p {
+	margin-bottom: 2rem;
+}
+
+/* 太字 */
+#post-body strong {
+	color: #ff6b6b; /* ケチャップ色 */
+	background: linear-gradient(
+		transparent 70%,
+		#fff4c1 70%
+	); /* 黄色いマーカー */
+	font-weight: bold;
+}
+
+/* ✨ 打ち消し線 (New!) */
+#post-body del {
+	color: #999;
+	text-decoration-thickness: 2px;
+}
+
+/* ✨ 区切り線 (New!) */
+#post-body hr {
+	border: 0;
+	border-top: 3px dashed #ffd966;
+	margin: 3rem 0;
+}
+
+/* 箇条書きリスト (ul) */
+#post-body ul {
+	margin-bottom: 2rem;
+	padding-left: 1.5rem;
+	list-style: disc;
+}
+#post-body ul li {
+	margin-bottom: 0.5rem;
+}
+
+/* 番号付きリスト (ol) */
+#post-body ol {
+	margin-bottom: 2rem;
+	padding-left: 1.5rem;
+	list-style: decimal;
+}
+#post-body ol li {
+	margin-bottom: 0.5rem;
+	padding-left: 0.5rem;
+}
+
+/* 画像 (img) */
+#post-body img {
+	max-width: 100%;
+	height: auto;
+	border-radius: 20px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+	margin: 2rem auto;
+	display: block;
+}
+
+/* 引用 (blockquote) */
+#post-body blockquote {
+	background-color: #f2f2f2;
 	padding: 1.5rem;
-	border-radius: 1rem;
-	overflow-x: auto; /* 横スクロール */
 	margin: 2rem 0;
-	font-family: 'Menlo', 'Monaco', 'Consolas', monospace; /* 等幅フォント */
+	border-left: 5px solid #ccc;
+	color: #666;
+	font-style: italic;
+	border-radius: 0 10px 10px 0;
+}
+
+/* リンク */
+#post-body a {
+	color: #ff6b6b;
+	text-decoration: underline;
+	text-underline-offset: 4px;
+	text-decoration-thickness: 2px;
+	transition: all 0.3s;
+}
+#post-body a:hover {
+	background-color: #ff6b6b;
+	color: white;
+	text-decoration: none;
+	border-radius: 4px;
+	padding: 0 4px;
+}
+
+/* =========================================
+   💻 テック記事用のデザイン (Prism.js対応)
+   ========================================= */
+
+/* Prism.js が適用される前のコードブロック */
+pre {
+	background-color: #2d2d2d;
+	color: #ccc;
+	padding: 1.5rem;
+	border-radius: 0.8rem;
+	overflow-x: auto;
+	margin: 2rem 0;
+	font-family: 'Menlo', 'Monaco', 'Consolas', monospace;
 	font-size: 0.9rem;
 	line-height: 1.6;
-	border: 4px solid #ffd966; /* オムライス色の枠線で可愛く！ */
+	border: 4px solid #ffd966;
 	box-shadow: 4px 4px 0px rgba(93, 64, 55, 0.1);
 }
 
-/* インラインコード（文中に出てくる短いコード） */
-code {
-	font-family: 'Menlo', 'Monaco', 'Consolas', monospace;
-}
-
-/* 文中のコードはちょっと強調 */
-p code,
-li code {
+/* インラインコード */
+:not(pre) > code {
 	background-color: #fff4c1;
 	color: #d35400;
-	padding: 0.2rem 0.4rem;
+	padding: 0.2rem 0.5rem;
 	border-radius: 0.4rem;
-	font-weight: bold;
+	font-family: 'Menlo', 'Monaco', 'Consolas', monospace;
 	font-size: 0.9em;
-}
-
-/* preの中のcodeは背景なし（preが背景持ってるから） */
-pre code {
-	background-color: transparent;
-	color: inherit;
-	padding: 0;
-	border-radius: 0;
-	font-weight: normal;
+	font-weight: bold;
+	border: 1px solid #ffd966;
 }

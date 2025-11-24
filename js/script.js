@@ -59,27 +59,18 @@ async function fetchPostById(id) {
 }
 
 // ==========================================
-// 🎨 画面表示 & SEO対策 (Update!)
+// 🎨 画面表示 & SEO対策
 // ==========================================
 
-// ✨ SEO用のメタタグ書き換え関数 (New!)
 function updateMetaTags(title, description) {
-	// タイトル変更
 	document.title = `${title} | OmuOmu Life`;
-
-	// description変更
 	let metaDesc = document.querySelector('meta[name="description"]');
 	if (!metaDesc) {
-		// なければ作る
 		metaDesc = document.createElement('meta');
 		metaDesc.name = 'description';
 		document.head.appendChild(metaDesc);
 	}
 	metaDesc.content = description;
-
-	// OGP (SNSシェア用) も書き換えとく？
-	// ※注意：TwitterなどはJS実行前のHTMLを見るから、これだけだと完璧には反映されないけど、
-	// Google検索などJSを実行してくれるクローラーには効果あるで！
 	let ogTitle = document.querySelector('meta[property="og:title"]');
 	if (ogTitle) ogTitle.content = title;
 }
@@ -189,10 +180,13 @@ async function renderArticle() {
 
 		document.getElementById('post-body').innerHTML = post.content;
 
-		// ✨ ここ！SEO対策でタイトルと説明文を書き換える！
 		updateMetaTags(post.title, post.excerpt);
-
 		setupShareButtons(post.title);
+
+		// ✨ ここ！！Prism.jsに「色塗りして！」ってお願いする
+		if (window.Prism) {
+			Prism.highlightAll();
+		}
 	} else {
 		document.getElementById('not-found').classList.remove('hidden');
 	}
