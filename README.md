@@ -25,6 +25,7 @@
 
 ## 🚀 ディレクトリ構成
 
+```
 omublog/
 ├── index.html # トップページ（記事一覧）
 ├── article.html # 記事詳細ページ（動的生成）
@@ -34,6 +35,7 @@ omublog/
 │ └── style.css # カスタムスタイル・アニメーション定義
 └── js/
 └── script.js # Supabase 連携・UI ロジック
+```
 
 ## ⚙️ セットアップ手順 (自分用メモ)
 
