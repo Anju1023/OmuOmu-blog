@@ -8,9 +8,7 @@ const SUPABASE_URL = 'https://msiaoywvnnudwywmimjf.supabase.co';
 const SUPABASE_KEY =
 	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1zaWFveXd2bm51ZHd5d21pbWpmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM3OTAxOTEsImV4cCI6MjA3OTM2NjE5MX0.1OQF6zmEZBL4mmsmQcwc_3LuP7bHllacwejlb9dsNzg';
 
-// Supabaseのクライアント（接続係）を作成
-// ここで window.supabase があるかチェックしてるんやけど、
-// article.html にスクリプトがないと null になっちゃうねん💦
+// Supabaseのクライアント
 const supabase = window.supabase
 	? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
 	: null;
@@ -21,7 +19,7 @@ function toggleMenu() {
 	menu.classList.toggle('translate-x-full');
 }
 
-// URLからパラメータ(?id=1 とか)を取得する関数
+// URLからパラメータ取得
 function getQueryParam(param) {
 	const urlParams = new URLSearchParams(window.location.search);
 	return urlParams.get(param);
@@ -32,53 +30,59 @@ function getQueryParam(param) {
 // ==========================================
 async function fetchPosts() {
 	if (!supabase) return [];
-
 	const { data, error } = await supabase
 		.from('posts')
 		.select('*')
 		.order('id', { ascending: false });
-
 	if (error) {
-		console.error('一覧の取得エラー:', error);
+		console.error('一覧取得エラー:', error);
 		return [];
 	}
 	return data;
 }
 
-// 単一の記事を取得する関数
 async function fetchPostById(id) {
 	if (!supabase) {
-		alert(
-			'大変！！article.html に Supabaseの道具箱（スクリプト）が入ってないみたい！💦\n\narticle.html の <head> の中を確認してな！'
-		);
+		alert('Supabaseの設定エラーや！article.htmlのスクリプトを確認して！');
 		return null;
 	}
-
-	console.log('探しているID:', id);
-
 	const { data, error } = await supabase
 		.from('posts')
 		.select('*')
 		.eq('id', id)
 		.single();
-
 	if (error) {
-		alert(
-			'事件発生！記事が見つからない原因はこれや！\n\n' +
-				error.message +
-				'\n\n(コード: ' +
-				error.code +
-				')'
-		);
-		console.error('詳細エラー:', error);
+		console.error('記事取得エラー:', error);
 		return null;
 	}
 	return data;
 }
 
 // ==========================================
-// 🎨 画面に表示する関数
+// 🎨 画面表示 & SEO対策 (Update!)
 // ==========================================
+
+// ✨ SEO用のメタタグ書き換え関数 (New!)
+function updateMetaTags(title, description) {
+	// タイトル変更
+	document.title = `${title} | OmuOmu Life`;
+
+	// description変更
+	let metaDesc = document.querySelector('meta[name="description"]');
+	if (!metaDesc) {
+		// なければ作る
+		metaDesc = document.createElement('meta');
+		metaDesc.name = 'description';
+		document.head.appendChild(metaDesc);
+	}
+	metaDesc.content = description;
+
+	// OGP (SNSシェア用) も書き換えとく？
+	// ※注意：TwitterなどはJS実行前のHTMLを見るから、これだけだと完璧には反映されないけど、
+	// Google検索などJSを実行してくれるクローラーには効果あるで！
+	let ogTitle = document.querySelector('meta[property="og:title"]');
+	if (ogTitle) ogTitle.content = title;
+}
 
 async function renderPosts() {
 	const container = document.getElementById('blog-posts-container');
@@ -86,7 +90,7 @@ async function renderPosts() {
 
 	if (!supabase) {
 		container.innerHTML =
-			'<div class="col-span-full text-center text-red-500 font-bold">⚠️ index.html に Supabaseのスクリプトタグがないかも！確認して！</div>';
+			'<div class="col-span-full text-center text-red-500 font-bold">Supabaseの設定エラー</div>';
 		return;
 	}
 
@@ -94,7 +98,7 @@ async function renderPosts() {
 
 	if (posts.length === 0) {
 		container.innerHTML =
-			'<div class="col-span-full text-center text-gray-400">記事が読み込めないみたい...URLとKEY合ってる？🤔</div>';
+			'<div class="col-span-full text-center text-gray-400">記事がないか、設定ミスかも！🍳</div>';
 		return;
 	}
 
@@ -134,11 +138,9 @@ async function renderPosts() {
         `;
 	});
 	container.innerHTML = html;
-
 	setupScrollReveal();
 }
 
-// 🕵️‍♀️ スクロール監視員の設定関数
 function setupScrollReveal() {
 	const observer = new IntersectionObserver(
 		(entries) => {
@@ -151,16 +153,12 @@ function setupScrollReveal() {
 				}
 			});
 		},
-		{
-			rootMargin: '0px',
-			threshold: 0.1,
-		}
+		{ rootMargin: '0px', threshold: 0.1 }
 	);
 
-	const targets = document.querySelectorAll('.scroll-fade-up');
-	targets.forEach((target) => {
-		observer.observe(target);
-	});
+	document
+		.querySelectorAll('.scroll-fade-up')
+		.forEach((target) => observer.observe(target));
 }
 
 async function renderArticle() {
@@ -190,42 +188,34 @@ async function renderArticle() {
 		bgElement.classList.add(colorClass);
 
 		document.getElementById('post-body').innerHTML = post.content;
-		document.title = `${post.title} | OmuOmu Life`;
 
-		// ✨ シェアボタンのURLを設定するで！
+		// ✨ ここ！SEO対策でタイトルと説明文を書き換える！
+		updateMetaTags(post.title, post.excerpt);
+
 		setupShareButtons(post.title);
 	} else {
 		document.getElementById('not-found').classList.remove('hidden');
 	}
 }
 
-// ✨ シェアボタンの設定関数 (NEW!)
 function setupShareButtons(title) {
 	const currentUrl = window.location.href;
-	const shareText = encodeURIComponent(`${title} | OmuOmu Life`); // タイトルをURL用に変換
-
-	// X (Twitter)
+	const shareText = encodeURIComponent(`${title} | OmuOmu Life`);
 	const xBtn = document.getElementById('share-x');
 	if (xBtn)
 		xBtn.href = `https://twitter.com/intent/tweet?text=${shareText}&url=${currentUrl}`;
-
-	// LINE
 	const lineBtn = document.getElementById('share-line');
 	if (lineBtn)
 		lineBtn.href = `https://social-plugins.line.me/lineit/share?url=${currentUrl}`;
 }
 
-// ✨ リンクコピー関数 (NEW!)
 window.copyLink = function () {
-	const currentUrl = window.location.href;
 	navigator.clipboard
-		.writeText(currentUrl)
+		.writeText(window.location.href)
 		.then(() => {
 			alert('リンクをコピーしたえ〜！🍳\n友達に送ってな！');
 		})
-		.catch((err) => {
-			console.error('コピー失敗:', err);
-		});
+		.catch((err) => console.error('コピー失敗:', err));
 };
 
 window.onload = function () {
