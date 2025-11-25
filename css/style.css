@@ -422,16 +422,17 @@ pre {
 	font-size: 0.85rem;
 	font-weight: bold;
 	text-decoration: none !important;
-	transition: all 0.2s;
+	transition: opacity 0.2s; /* ✨ 色の変化だけにする */
 	color: white !important;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
+/* ✨ ここ修正！動きをなくしてシンプルに！ */
 .aff-btn:hover {
-	transform: translateY(-2px);
-	opacity: 0.9;
+	transform: none; /* 動かさない */
+	opacity: 0.8; /* ちょっと薄くするだけ */
 	color: white !important;
 	text-decoration: none !important;
-	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 影もそのまま */
 }
 /* 各ボタンの色はそのまま */
 .aff-btn.rakuten {
