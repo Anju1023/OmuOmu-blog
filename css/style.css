@@ -426,7 +426,7 @@ pre {
 	color: white !important;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-/* ✨ ここ修正！動きをなくしてシンプルに！ */
+/* ✨ 修正！動きをなくして透明度だけ変える */
 .aff-btn:hover {
 	transform: none; /* 動かさない */
 	opacity: 0.8; /* ちょっと薄くするだけ */
@@ -531,7 +531,6 @@ pre {
 	border-left: 1px solid #f0f0f0;
 }
 
-/* スマホ対応 */
 @media (max-width: 640px) {
 	.link-card {
 		flex-direction: column-reverse;
@@ -697,15 +696,14 @@ body.dark footer {
 	color: #ccc;
 }
 
-/* ✨ SNSボタン & コピーボタン (New!) */
-/* デフォルトで白文字になって見えないのを防ぐため、背景色を濃くする！ */
+/* ✨ SNSボタン & コピーボタン */
 body.dark .bg-gray-100 {
-	background-color: #444; /* ボタン背景を濃いグレーに */
-	color: #ededed; /* アイコンを白に */
+	background-color: #444;
+	color: #ededed;
 }
 body.dark .bg-gray-100:hover {
-	background-color: #ffd966; /* ホバー時はオムライス色 */
-	color: #5d4037; /* アイコンは茶色 */
+	background-color: #ffd966;
+	color: #5d4037;
 }
 
 /* ローディングアニメーション */
