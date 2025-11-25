@@ -448,7 +448,7 @@ pre {
 }
 
 /* =========================================
-   🔗 リンクカード
+   🔗 リンクカード (Fix!)
    ========================================= */
 .link-card {
 	border: 1px solid #e5e7eb;
@@ -572,6 +572,11 @@ body.dark .text-gray-400 {
 /* カードホバー時の影を光彩っぽく */
 body.dark .blog-card:hover {
 	box-shadow: 0 10px 25px rgba(255, 217, 102, 0.1);
+}
+
+/* ⚠️ ここ修正！記事一覧のタグは背景が白いので、文字色は茶色のままにする！ */
+body.dark .blog-card .absolute.text-omu-demi {
+	color: #5d4037;
 }
 
 /* 記事本文エリア */
