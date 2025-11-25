@@ -2,7 +2,6 @@
 // 🚀 Supabase 設定
 // ==========================================
 let supabase = null;
-// config.js は親フォルダの js/config.js にあるので、index.html で読み込まれていれば変数が使える！
 if (
 	typeof SUPABASE_URL !== 'undefined' &&
 	typeof SUPABASE_KEY !== 'undefined' &&
@@ -166,7 +165,8 @@ function updatePreview() {
 				}">
             <div class="text-6xl">${data.emoji || '🍳'}</div>
         </div>
-        <div class="prose-preview text-omu-demi text-sm leading-relaxed">
+        <!-- ✨ id="post-body" をつけて本番CSSを適用させる！ -->
+        <div id="post-body" class="text-omu-demi text-sm leading-relaxed">
             ${data.content}
         </div>
     `;
@@ -292,10 +292,12 @@ function confirmLinkCard() {
 
 	let imgHtml = '';
 	if (img) {
-		imgHtml = `<div class="lc-img" style="background-image: url('${img}');"></div>`;
+		// ✨ div じゃなくて span に変更！
+		imgHtml = `<span class="lc-img" style="background-image: url('${img}');"></span>`;
 	}
 
-	const cardHtml = `\n<a href="${url}" target="_blank" class="link-card"><div class="lc-content"><div class="lc-title">${title}</div><div class="lc-desc">${desc}</div><div class="lc-meta"><img src="https://www.google.com/s2/favicons?domain=${domain}" width="14" height="14"> ${domain}</div></div>${imgHtml}</a>\n`;
+	// ✨ div じゃなくて span に変更！Markdown対策！
+	const cardHtml = `\n<a href="${url}" target="_blank" class="link-card"><span class="lc-content"><span class="lc-title">${title}</span><span class="lc-desc">${desc}</span><span class="lc-meta"><img src="https://www.google.com/s2/favicons?domain=${domain}" width="14" height="14"> ${domain}</span></span>${imgHtml}</a>\n`;
 	insertTag(cardHtml, '');
 	closeLinkCardModal();
 }
@@ -334,7 +336,6 @@ async function uploadImage(input) {
 // 💾 保存・削除
 // ---------------------------------------------------------
 async function submitPost() {
-	// 互換性のための関数 (savePostに統合してもいいけど残しておく)
 	savePost('published');
 }
 
@@ -347,18 +348,26 @@ async function savePost(status) {
 	try {
 		let error;
 		if (id) {
-			const res = await supabase.from('posts').update(data).eq('id', id);
+			const res = await supabase
+				.from('posts')
+				.update(data)
+				.eq('id', id)
+				.select();
 			error = res.error;
+			if (!error && res.data.length === 0)
+				throw new Error('更新できへんかった！Supabaseのポリシーを確認してな！');
 		} else {
-			const res = await supabase.from('posts').insert([data]);
+			const res = await supabase.from('posts').insert([data]).select();
 			error = res.error;
+			if (!error && res.data.length === 0)
+				throw new Error('投稿できへんかった！Supabaseのポリシーを確認してな！');
 		}
 		if (error) throw error;
 		alert(status === 'draft' ? '下書き保存完了！' : '公開完了！');
 		fetchPostList();
 		if (!id) createNewPost();
 	} catch (e) {
-		alert('エラー: ' + e.message);
+		alert('エラー発生💦 ' + e.message);
 	}
 }
 
@@ -366,8 +375,10 @@ async function deletePost() {
 	const id = document.getElementById('in-id').value;
 	if (!id || !confirm('本当に削除する？')) return;
 	try {
-		const { error } = await supabase.from('posts').delete().eq('id', id);
-		if (error) throw error;
+		const res = await supabase.from('posts').delete().eq('id', id).select();
+		if (res.error) throw res.error;
+		if (res.data.length === 0)
+			throw new Error('削除できへんかった！Supabaseのポリシーを確認してな！');
 		alert('削除しました');
 		createNewPost();
 		fetchPostList();
@@ -376,7 +387,6 @@ async function deletePost() {
 	}
 }
 
-// 挿入ボタンのバインド
 window.insertAffiliateCard = confirmAffiliate;
 
 // 初期プレビュー

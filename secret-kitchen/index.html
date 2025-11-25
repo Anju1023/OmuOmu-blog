@@ -73,7 +73,7 @@
 					Secret Kitchen
 					<span
 						class="text-xs bg-omu-blue text-white px-2 py-0.5 rounded-full ml-2"
-						>v5.0</span
+						>v5.2</span
 					>
 				</h1>
 			</div>
@@ -386,7 +386,7 @@
 			</main>
 		</div>
 
-		<!-- モーダル (商品 & リンク) -->
+		<!-- 商品カードモーダル -->
 		<div
 			id="affiliate-modal"
 			class="fixed inset-0 bg-black/50 flex items-center justify-center hidden z-50 backdrop-blur-sm"
@@ -432,38 +432,43 @@
 					<div>
 						<label class="block text-xs font-bold mb-1 text-omu-demi"
 							>商品名</label
-						><input
+						>
+						<input
 							type="text"
 							id="aff-name"
-							class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm"
+							class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-omu-egg transition"
 						/>
 					</div>
 					<div>
 						<label class="block text-xs font-bold mb-1 text-omu-demi"
 							>画像URL</label
-						><input
+						>
+						<input
 							type="text"
 							id="aff-img"
-							class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm"
+							class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-omu-egg transition"
 						/>
 					</div>
 					<div>
 						<label class="block text-xs font-bold mb-1 text-omu-demi"
 							>リンクURL</label
-						><input
+						>
+						<input
 							type="text"
 							id="aff-link"
-							class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm"
+							class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-omu-egg transition"
 						/>
 					</div>
 					<div>
 						<label class="block text-xs font-bold mb-1 text-omu-demi"
 							>ボタンの文字</label
-						><input
+						>
+						<input
 							type="text"
 							id="aff-btn-text"
-							class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm"
+							class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-omu-egg transition"
 							value="楽天で見る"
+							placeholder="例：楽天トラベルで予約"
 						/>
 					</div>
 				</div>
@@ -484,6 +489,7 @@
 			</div>
 		</div>
 
+		<!-- リンクカードモーダル -->
 		<div
 			id="linkcard-modal"
 			class="fixed inset-0 bg-black/50 flex items-center justify-center hidden z-50 backdrop-blur-sm"
@@ -498,38 +504,45 @@
 				</h3>
 				<div class="space-y-4">
 					<div>
-						<label class="block text-xs font-bold mb-1 text-omu-demi">URL</label
-						><input
+						<label class="block text-xs font-bold mb-1 text-omu-demi"
+							>URL</label
+						>
+						<input
 							type="text"
 							id="lc-url"
-							class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm"
+							class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-blue-300 transition"
+							placeholder="https://..."
 						/>
 					</div>
 					<div>
 						<label class="block text-xs font-bold mb-1 text-omu-demi"
 							>タイトル</label
-						><input
+						>
+						<input
 							type="text"
 							id="lc-title"
-							class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm"
+							class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-blue-300 transition"
 						/>
 					</div>
 					<div>
 						<label class="block text-xs font-bold mb-1 text-omu-demi"
 							>説明文</label
-						><input
+						>
+						<input
 							type="text"
 							id="lc-desc"
-							class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm"
+							class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-blue-300 transition"
 						/>
 					</div>
 					<div>
 						<label class="block text-xs font-bold mb-1 text-omu-demi"
 							>画像URL (任意)</label
-						><input
+						>
+						<input
 							type="text"
 							id="lc-img"
-							class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm"
+							class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-blue-300 transition"
+							placeholder="空欄なら画像なし"
 						/>
 					</div>
 				</div>
@@ -551,8 +564,7 @@
 		</div>
 
 		<!-- ✨ Config & Script 読み込み -->
-		<!-- 注意：index.htmlは 'secret-kitchen' フォルダにいるから、config.js は '../js/config.js' にある！ -->
-		<script src="../js/config.js"></script>
+		<script src="config.js"></script>
 		<script src="script.js"></script>
 	</body>
 </html>
