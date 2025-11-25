@@ -1,0 +1,42 @@
+/* 管理画面固有のスタイル */
+body {
+	background-color: #f3f4f6; /* 全体は薄いグレー */
+}
+
+/* リストアイテム */
+.admin-list-item {
+	transition: all 0.2s;
+}
+.admin-list-item:hover {
+	background-color: #f9fafb;
+}
+.admin-list-item.active {
+	background-color: #fff4c1; /* 選択中は薄い卵色 */
+	border-left: 4px solid #ffd966; /* 左に黄色い線 */
+}
+
+/* モーダルのタブ */
+.tab-btn {
+	transition: all 0.2s;
+}
+.tab-btn.active {
+	border-bottom: 2px solid #ff6b6b;
+	color: #ff6b6b;
+	font-weight: bold;
+}
+
+/* スクロールバーを可愛く */
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+::-webkit-scrollbar-thumb {
+	background: #ddd;
+	border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+	background: #bbb;
+}

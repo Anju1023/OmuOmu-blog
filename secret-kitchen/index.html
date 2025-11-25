@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>秘密のキッチン | OmuOmu Life</title>
+		<link
+			rel="icon"
+			href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍳</text></svg>"
+		/>
+
+		<!-- Google Fonts -->
+		<link
+			href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@300;400;500&family=M+PLUS+Rounded+1c:wght@400;700&display=swap"
+			rel="stylesheet"
+		/>
+
+		<!-- ライブラリ -->
+		<script src="https://cdn.tailwindcss.com"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+		<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+		<!-- Prism.js -->
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
+		/>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+		<!-- Tailwind設定 -->
+		<script>
+			tailwind.config = {
+				theme: {
+					extend: {
+						colors: {
+							'omu-egg': '#FFD966',
+							'omu-egg-light': '#FFF4C1',
+							'omu-ketchup': '#FF6B6B',
+							'omu-rice': '#FAF9F6',
+							'omu-demi': '#5D4037',
+							'omu-green': '#88D8B0',
+							'omu-blue': '#74b9ff',
+							'omu-purple': '#a29bfe',
+						},
+						fontFamily: {
+							body: ['"M PLUS Rounded 1c"', 'sans-serif'],
+							title: ['"Kiwi Maru"', 'serif'],
+						},
+					},
+				},
+			};
+		</script>
+
+		<!-- ✨ 本番用CSSと、管理画面用CSSを読み込み！ -->
+		<link rel="stylesheet" href="../css/style.css" />
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body
+		class="flex flex-col min-h-screen text-omu-demi bg-gray-100 h-screen overflow-hidden"
+	>
+		<!-- ヘッダー -->
+		<header
+			class="bg-white border-b border-gray-200 shadow-sm z-10 px-6 py-3 flex justify-between items-center"
+		>
+			<div class="flex items-center gap-2">
+				<div
+					class="w-8 h-8 bg-omu-egg rounded-full flex items-center justify-center text-lg shadow-inner"
+				>
+					🍳
+				</div>
+				<h1 class="font-title text-xl font-bold text-omu-demi">
+					Secret Kitchen
+					<span
+						class="text-xs bg-omu-blue text-white px-2 py-0.5 rounded-full ml-2"
+						>v5.0</span
+					>
+				</h1>
+			</div>
+
+			<!-- ログインエリア -->
+			<div class="flex items-center gap-2" id="login-area">
+				<input
+					type="email"
+					id="login-email"
+					placeholder="Email"
+					class="bg-gray-50 border border-gray-200 rounded px-3 py-1 text-sm w-40 focus:outline-none focus:border-omu-egg"
+				/>
+				<input
+					type="password"
+					id="login-pass"
+					placeholder="Password"
+					class="bg-gray-50 border border-gray-200 rounded px-3 py-1 text-sm w-32 focus:outline-none focus:border-omu-egg"
+				/>
+				<button
+					onclick="loginAndFetch()"
+					class="bg-omu-demi text-white px-4 py-1 rounded text-sm hover:bg-omu-ketchup transition shadow-sm"
+				>
+					Login
+				</button>
+			</div>
+			<div id="user-info" class="hidden flex items-center gap-4">
+				<span class="text-sm text-green-600 font-bold flex items-center gap-1">
+					<span class="w-2 h-2 bg-green-500 rounded-full"></span> ログイン中
+				</span>
+				<button
+					onclick="logout()"
+					class="text-xs text-gray-400 hover:text-red-500 underline"
+				>
+					ログアウト
+				</button>
+			</div>
+		</header>
+
+		<div class="flex flex-1 overflow-hidden">
+			<!-- 左側：記事一覧リスト -->
+			<aside
+				class="w-80 bg-white border-r border-gray-200 flex flex-col shadow-sm z-0"
+			>
+				<div
+					class="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50"
+				>
+					<h2 class="font-bold text-gray-600 text-sm">記事一覧</h2>
+					<button
+						onclick="createNewPost()"
+						class="text-xs bg-omu-green text-white px-3 py-1 rounded-full hover:bg-green-600 transition shadow-sm flex items-center gap-1"
+					>
+						<span>+</span> 新規
+					</button>
+				</div>
+				<div class="flex-1 overflow-y-auto p-2 space-y-1" id="post-list">
+					<div class="text-center text-xs text-gray-400 py-10">
+						右上のフォームから<br />ログインしてね 🔑
+					</div>
+				</div>
+			</aside>
+
+			<!-- 中央：編集エリア -->
+			<main class="flex-1 overflow-y-auto p-8 bg-gray-50 flex justify-center">
+				<div class="w-full max-w-6xl flex gap-6 h-full">
+					<!-- 入力フォーム -->
+					<div
+						class="flex-1 flex flex-col gap-4 h-full overflow-y-auto pb-20 pr-2"
+					>
+						<div
+							class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200"
+						>
+							<!-- ステータス表示 -->
+							<div class="flex justify-between items-center mb-4">
+								<span
+									id="edit-mode-label"
+									class="text-xs font-bold bg-omu-green text-white px-3 py-1 rounded-full shadow-sm"
+									>🌱 新規作成モード</span
+								>
+								<input type="text" id="in-id" hidden />
+							</div>
+
+							<!-- 基本情報 -->
+							<div class="grid grid-cols-2 gap-4 mb-4">
+								<div>
+									<label class="block text-xs font-bold mb-1 text-gray-500"
+										>日付</label
+									>
+									<input
+										type="text"
+										id="in-date"
+										class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-omu-egg"
+									/>
+								</div>
+								<div>
+									<label class="block text-xs font-bold mb-1 text-gray-500"
+										>カテゴリー</label
+									>
+									<input
+										type="text"
+										id="in-category"
+										list="category-list"
+										class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-omu-egg"
+										placeholder="選択..."
+									/>
+									<datalist id="category-list">
+										<option value="☕️ カフェ巡り"></option>
+										<option value="🎮 ゲーム"></option>
+										<option value="💻 プログラミング"></option>
+										<option value="📱 ガジェット"></option>
+										<option value="👗 ファッション"></option>
+										<option value="🏠 ライフスタイル"></option>
+									</datalist>
+								</div>
+							</div>
+
+							<div class="mb-4">
+								<label class="block text-xs font-bold mb-1 text-gray-500"
+									>タイトル</label
+								>
+								<input
+									type="text"
+									id="in-title"
+									class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 font-bold text-lg focus:outline-none focus:border-omu-egg"
+									placeholder="記事タイトル"
+								/>
+							</div>
+
+							<div class="grid grid-cols-3 gap-4 mb-4">
+								<div class="col-span-1">
+									<label class="block text-xs font-bold mb-1 text-gray-500"
+										>絵文字</label
+									><input
+										type="text"
+										id="in-emoji"
+										class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-center focus:outline-none focus:border-omu-egg"
+										placeholder="🍳"
+									/>
+								</div>
+								<div class="col-span-2">
+									<label class="block text-xs font-bold mb-1 text-gray-500"
+										>テーマカラー</label
+									>
+									<select
+										id="in-color"
+										class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-omu-egg"
+									>
+										<option value="bg-omu-egg-light">💛 黄色 (たまご)</option>
+										<option value="bg-red-50">❤️ 赤色 (ケチャップ)</option>
+										<option value="bg-green-50">💚 緑色 (パセリ)</option>
+										<option value="bg-blue-50">💙 水色 (お皿)</option>
+										<option value="bg-indigo-50">🫐 藍色 (テック)</option>
+										<option value="bg-purple-50">🍇 紫色 (ゲーム)</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="mb-4">
+								<label class="block text-xs font-bold mb-1 text-gray-500"
+									>短い説明</label
+								>
+								<textarea
+									id="in-excerpt"
+									rows="2"
+									class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-omu-egg"
+									placeholder="一覧に表示される要約文"
+								></textarea>
+							</div>
+
+							<!-- 本文エディタ -->
+							<div>
+								<div class="flex justify-between items-end mb-2">
+									<label class="block text-xs font-bold text-gray-500"
+										>本文 (Markdown)</label
+									>
+									<div class="flex gap-2 text-xs flex-wrap">
+										<button
+											onclick="insertTag('## ', '')"
+											class="bg-omu-demi text-white px-2 py-1 rounded hover:bg-omu-ketchup transition"
+										>
+											h2
+										</button>
+										<button
+											onclick="insertTag('### ', '')"
+											class="bg-omu-demi text-white px-2 py-1 rounded hover:bg-omu-ketchup transition"
+										>
+											h3
+										</button>
+										<button
+											onclick="insertTag('**', '**')"
+											class="bg-omu-demi text-white px-2 py-1 rounded hover:bg-omu-ketchup transition"
+										>
+											太字
+										</button>
+										<button
+											onclick="insertTag('-', ' ')"
+											class="bg-omu-demi text-white px-2 py-1 rounded hover:bg-omu-ketchup transition"
+										>
+											リスト
+										</button>
+										<button
+											onclick="insertTag('1. ', ' ')"
+											class="bg-omu-demi text-white px-2 py-1 rounded hover:bg-omu-ketchup transition"
+										>
+											番号
+										</button>
+										<button
+											onclick="document.getElementById('image-upload').click()"
+											class="bg-omu-green text-white px-2 py-1 rounded hover:bg-green-600 transition flex items-center gap-1"
+										>
+											<span>📷</span> アップロード
+										</button>
+										<input
+											type="file"
+											id="image-upload"
+											accept="image/*"
+											hidden
+											onchange="uploadImage(this)"
+										/>
+										<button
+											onclick="insertAffiliate()"
+											class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition"
+										>
+											🎁 商品
+										</button>
+										<button
+											onclick="insertLinkCardModal()"
+											class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition"
+										>
+											🔗 リンク
+										</button>
+										<button
+											onclick="insertTag('![説明](', ')')"
+											class="bg-gray-300 text-omu-demi px-2 py-1 rounded hover:bg-gray-400 transition"
+										>
+											URL
+										</button>
+										<button
+											onclick="insertCodeBlock()"
+											class="bg-gray-700 text-white px-2 py-1 rounded hover:bg-black transition"
+										>
+											Code
+										</button>
+									</div>
+								</div>
+								<textarea
+									id="in-content"
+									rows="15"
+									class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 font-mono text-sm leading-relaxed focus:outline-none focus:border-omu-egg"
+									placeholder="## 見出し&#13;&#10;ここに本文。空行を入れると段落になるよ。"
+								></textarea>
+							</div>
+						</div>
+
+						<!-- 操作ボタンエリア -->
+						<div class="flex gap-4 items-center">
+							<button
+								onclick="deletePost()"
+								id="btn-delete"
+								class="text-gray-400 hover:text-red-500 transition hidden"
+								title="削除"
+							>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									<polyline points="3 6 5 6 21 6"></polyline>
+									<path
+										d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+									></path>
+								</svg>
+							</button>
+							<div class="flex-1 flex gap-3 justify-end">
+								<button
+									onclick="savePost('draft')"
+									class="bg-gray-400 text-white px-6 py-3 rounded-full font-bold hover:bg-gray-500 transition shadow-md flex items-center gap-2"
+								>
+									<span>📝</span> 下書き保存
+								</button>
+								<button
+									onclick="savePost('published')"
+									class="bg-omu-ketchup text-white px-8 py-3 rounded-full font-bold hover:bg-red-500 transition shadow-lg transform hover:-translate-y-1 flex items-center gap-2"
+								>
+									<span>🚀</span> 公開する
+								</button>
+							</div>
+						</div>
+					</div>
+
+					<!-- プレビュー -->
+					<div class="flex-1 hidden lg:block h-full overflow-y-auto pb-20">
+						<div
+							class="bg-white p-8 rounded-2xl shadow-sm border border-gray-200 min-h-[500px]"
+						>
+							<h2
+								class="text-xs font-bold text-gray-400 mb-6 uppercase tracking-widest border-b border-gray-100 pb-2"
+							>
+								Realtime Preview
+							</h2>
+							<div id="preview-area" class="prose-preview"></div>
+						</div>
+					</div>
+				</div>
+			</main>
+		</div>
+
+		<!-- モーダル (商品 & リンク) -->
+		<div
+			id="affiliate-modal"
+			class="fixed inset-0 bg-black/50 flex items-center justify-center hidden z-50 backdrop-blur-sm"
+		>
+			<div
+				class="bg-white p-8 rounded-[30px] shadow-2xl w-full max-w-md border-4 border-omu-egg"
+			>
+				<h3
+					class="font-title text-xl font-bold mb-6 text-omu-demi flex items-center gap-2"
+				>
+					<span>🎁</span> 商品カード作成
+				</h3>
+				<div class="flex border-b border-gray-200 mb-4">
+					<button
+						onclick="switchAffTab('code')"
+						id="tab-code"
+						class="tab-btn px-4 py-2 text-sm text-gray-500 active"
+					>
+						楽天コード貼り付け
+					</button>
+					<button
+						onclick="switchAffTab('manual')"
+						id="tab-manual"
+						class="tab-btn px-4 py-2 text-sm text-gray-500"
+					>
+						手動入力
+					</button>
+				</div>
+				<div id="area-code" class="space-y-4">
+					<div>
+						<label class="block text-xs font-bold mb-1 text-omu-demi"
+							>楽天アフィリエイトのコード</label
+						>
+						<textarea
+							id="aff-code-input"
+							rows="5"
+							class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-xs focus:outline-none focus:border-omu-egg transition"
+							placeholder="<a href...>...</a>"
+						></textarea>
+					</div>
+				</div>
+				<div id="area-manual" class="space-y-4 hidden">
+					<div>
+						<label class="block text-xs font-bold mb-1 text-omu-demi"
+							>商品名</label
+						><input
+							type="text"
+							id="aff-name"
+							class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm"
+						/>
+					</div>
+					<div>
+						<label class="block text-xs font-bold mb-1 text-omu-demi"
+							>画像URL</label
+						><input
+							type="text"
+							id="aff-img"
+							class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm"
+						/>
+					</div>
+					<div>
+						<label class="block text-xs font-bold mb-1 text-omu-demi"
+							>リンクURL</label
+						><input
+							type="text"
+							id="aff-link"
+							class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm"
+						/>
+					</div>
+					<div>
+						<label class="block text-xs font-bold mb-1 text-omu-demi"
+							>ボタンの文字</label
+						><input
+							type="text"
+							id="aff-btn-text"
+							class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm"
+							value="楽天で見る"
+						/>
+					</div>
+				</div>
+				<div class="flex justify-end gap-3 mt-8">
+					<button
+						onclick="closeAffiliateModal()"
+						class="px-5 py-2 rounded-full text-sm font-bold text-gray-500 hover:bg-gray-100"
+					>
+						キャンセル
+					</button>
+					<button
+						onclick="confirmAffiliate()"
+						class="px-6 py-2 rounded-full text-sm font-bold bg-omu-ketchup text-white hover:bg-red-500 shadow-md"
+					>
+						挿入！
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<div
+			id="linkcard-modal"
+			class="fixed inset-0 bg-black/50 flex items-center justify-center hidden z-50 backdrop-blur-sm"
+		>
+			<div
+				class="bg-white p-8 rounded-[30px] shadow-2xl w-full max-w-md border-4 border-blue-200"
+			>
+				<h3
+					class="font-title text-xl font-bold mb-6 text-omu-demi flex items-center gap-2"
+				>
+					<span>🔗</span> リンクカード作成
+				</h3>
+				<div class="space-y-4">
+					<div>
+						<label class="block text-xs font-bold mb-1 text-omu-demi">URL</label
+						><input
+							type="text"
+							id="lc-url"
+							class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm"
+						/>
+					</div>
+					<div>
+						<label class="block text-xs font-bold mb-1 text-omu-demi"
+							>タイトル</label
+						><input
+							type="text"
+							id="lc-title"
+							class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm"
+						/>
+					</div>
+					<div>
+						<label class="block text-xs font-bold mb-1 text-omu-demi"
+							>説明文</label
+						><input
+							type="text"
+							id="lc-desc"
+							class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm"
+						/>
+					</div>
+					<div>
+						<label class="block text-xs font-bold mb-1 text-omu-demi"
+							>画像URL (任意)</label
+						><input
+							type="text"
+							id="lc-img"
+							class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm"
+						/>
+					</div>
+				</div>
+				<div class="flex justify-end gap-3 mt-8">
+					<button
+						onclick="closeLinkCardModal()"
+						class="px-5 py-2 rounded-full text-sm font-bold text-gray-500 hover:bg-gray-100"
+					>
+						キャンセル
+					</button>
+					<button
+						onclick="confirmLinkCard()"
+						class="px-6 py-2 rounded-full text-sm font-bold bg-blue-500 text-white hover:bg-blue-600 shadow-md"
+					>
+						挿入！
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- ✨ Config & Script 読み込み -->
+		<!-- 注意：index.htmlは 'secret-kitchen' フォルダにいるから、config.js は '../js/config.js' にある！ -->
+		<script src="../js/config.js"></script>
+		<script src="script.js"></script>
+	</body>
+</html>

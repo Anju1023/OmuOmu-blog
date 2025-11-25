@@ -8,18 +8,18 @@
 			rel="icon"
 			href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍳</text></svg>"
 		/>
+
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
 			href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@300;400;500&family=M+PLUS+Rounded+1c:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap"
 			rel="stylesheet"
 		/>
-		<script src="https://cdn.tailwindcss.com"></script>
 
-		<!-- Supabaseの魔法の道具箱 -->
+		<script src="https://cdn.tailwindcss.com"></script>
 		<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-		<!-- ✨ Prism.js (シンタックスハイライト) -->
+		<!-- Prism.js -->
 		<link
 			rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
@@ -54,18 +54,27 @@
 			<div
 				class="container mx-auto max-w-6xl px-6 py-6 flex justify-between items-center"
 			>
-				<a href="index.html" class="flex items-center gap-2 group">
-					<div
-						class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-2xl shadow-inner group-hover:rotate-12 transition-transform"
+				<div class="flex items-center gap-4">
+					<a href="index.html" class="flex items-center gap-2 group">
+						<div
+							class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-2xl shadow-inner group-hover:rotate-12 transition-transform"
+						>
+							🍳
+						</div>
+						<h1
+							class="font-title text-2xl md:text-3xl font-bold tracking-wider text-omu-demi"
+						>
+							OmuOmu<span class="text-omu-ketchup">.</span>
+						</h1>
+					</a>
+					<button
+						id="theme-toggle-btn"
+						onclick="toggleDarkMode()"
+						class="w-8 h-8 rounded-full bg-white/50 hover:bg-white flex items-center justify-center transition-colors text-lg"
 					>
-						🍳
-					</div>
-					<h1
-						class="font-title text-2xl md:text-3xl font-bold tracking-wider text-omu-demi"
-					>
-						OmuOmu<span class="text-omu-ketchup">.</span>
-					</h1>
-				</a>
+						🌙
+					</button>
+				</div>
 				<nav class="hidden md:flex gap-8 font-bold text-sm tracking-widest">
 					<a href="index.html" class="hover:text-omu-ketchup transition-colors"
 						>HOME</a
@@ -168,24 +177,19 @@
 				<div class="text-8xl md:text-9xl float-icon" id="post-emoji">🍳</div>
 			</div>
 
-			<!-- 記事本文エリア -->
 			<div
 				class="bg-white rounded-[40px] p-8 md:p-12 shadow-sm border border-gray-100 mb-12"
 			>
-				<!-- ✨ 目次エリア (New!) -->
-				<!-- ここにJSで目次が生成されるよ！ -->
 				<div id="toc-container" class="hidden"></div>
-
-				<!-- line-numbers クラスをつけると行番号が出るよ！ -->
 				<div
 					class="prose prose-brown max-w-none text-omu-demi line-numbers"
 					id="post-body"
 				>
-					<div class="text-center text-gray-400 py-10">読み込み中...🍳</div>
+					<!-- ここに本文 -->
 				</div>
 			</div>
 
-			<!-- シェアボタンエリア -->
+			<!-- シェアボタン -->
 			<div class="max-w-2xl mx-auto mb-16 text-center">
 				<p
 					class="text-omu-ketchup font-bold text-sm tracking-widest mb-6 opacity-70"
@@ -198,9 +202,7 @@
 						href="#"
 						target="_blank"
 						class="w-12 h-12 bg-black text-white rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-md"
-						title="Xでシェア"
-					>
-						<svg
+						><svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="20"
 							height="20"
@@ -209,17 +211,14 @@
 						>
 							<path
 								d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
-							/>
-						</svg>
-					</a>
+							/></svg
+					></a>
 					<a
 						id="share-line"
 						href="#"
 						target="_blank"
 						class="w-12 h-12 bg-[#06C755] text-white rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-md"
-						title="LINEで送る"
-					>
-						<svg
+						><svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="20"
 							height="20"
@@ -228,13 +227,11 @@
 						>
 							<path
 								d="M12 2.5c-5.52 0-10 3.58-10 8 0 2.6 1.54 4.91 3.96 6.35-.18.67-.65 2.38-.74 2.87-.08.47.21.92.57.55.42-.43 2.35-2.04 3.19-2.74.96.27 1.98.42 3.02.42 5.52 0 10-3.58 10-8s-4.48-8-10-8z"
-							/>
-						</svg>
-					</a>
+							/></svg
+					></a>
 					<button
 						onclick="copyLink()"
 						class="w-12 h-12 bg-gray-100 text-omu-demi rounded-full flex items-center justify-center hover:bg-omu-egg hover:text-white hover:scale-110 transition-all shadow-md"
-						title="リンクをコピー"
 					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -291,11 +288,34 @@
 							「丁度いい」幸せを見つける場所。<br />ご飯のこと、服のこと、日々のこと。
 						</p>
 					</div>
-					<div class="md:w-1/3">
-						<div class="text-right md:text-left">
-							<a href="index.html" class="text-omu-egg hover:underline"
-								>Top Page</a
-							>
+					<div class="md:w-1/3 flex gap-10">
+						<div>
+							<h6 class="font-bold text-omu-egg mb-4 text-sm tracking-wider">
+								MENU
+							</h6>
+							<ul class="space-y-2 text-sm opacity-80">
+								<li>
+									<a
+										href="index.html"
+										class="hover:text-omu-egg transition-colors"
+										>Home</a
+									>
+								</li>
+								<li>
+									<a
+										href="about.html"
+										class="hover:text-omu-egg transition-colors"
+										>About</a
+									>
+								</li>
+								<li>
+									<a
+										href="index.html#latest"
+										class="hover:text-omu-egg transition-colors"
+										>Diary</a
+									>
+								</li>
+							</ul>
 						</div>
 					</div>
 				</div>
@@ -307,9 +327,11 @@
 			</div>
 		</footer>
 
-		<!-- ✨ Prism.jsの本体スクリプトと、言語を自動判定するプラグイン！ -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+		<!-- ✨ Config & Script 読み込み -->
+		<script src="js/config.js"></script>
 		<script src="js/script.js"></script>
 	</body>
 </html>

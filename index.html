@@ -19,8 +19,10 @@
 			href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@300;400;500&family=M+PLUS+Rounded+1c:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap"
 			rel="stylesheet"
 		/>
+
 		<script src="https://cdn.tailwindcss.com"></script>
 		<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 		<script>
 			tailwind.config = {
 				theme: {
@@ -51,20 +53,33 @@
 			<div
 				class="container mx-auto max-w-6xl px-6 py-6 flex justify-between items-center"
 			>
-				<a href="#" class="flex items-center gap-2 group">
-					<div
-						class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-2xl shadow-inner group-hover:rotate-12 transition-transform"
+				<div class="flex items-center gap-4">
+					<a href="index.html" class="flex items-center gap-2 group">
+						<div
+							class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-2xl shadow-inner group-hover:rotate-12 transition-transform"
+						>
+							🍳
+						</div>
+						<h1
+							class="font-title text-2xl md:text-3xl font-bold tracking-wider text-omu-demi"
+						>
+							OmuOmu<span class="text-omu-ketchup">.</span>
+						</h1>
+					</a>
+					<button
+						id="theme-toggle-btn"
+						onclick="toggleDarkMode()"
+						class="w-8 h-8 rounded-full bg-white/50 hover:bg-white flex items-center justify-center transition-colors text-lg"
+						title="夜モードにする"
 					>
-						🍳
-					</div>
-					<h1
-						class="font-title text-2xl md:text-3xl font-bold tracking-wider text-omu-demi"
-					>
-						OmuOmu<span class="text-omu-ketchup">.</span>
-					</h1>
-				</a>
+						🌙
+					</button>
+				</div>
+
 				<nav class="hidden md:flex gap-8 font-bold text-sm tracking-widest">
-					<a href="#" class="hover:text-omu-ketchup transition-colors">HOME</a>
+					<a href="index.html" class="hover:text-omu-ketchup transition-colors"
+						>HOME</a
+					>
 					<a href="about.html" class="hover:text-omu-ketchup transition-colors"
 						>ABOUT</a
 					>
@@ -126,8 +141,10 @@
 						>
 					</p>
 
-					<!-- 🔍 検索ボックス (New!) -->
-					<div class="flex gap-2 justify-center md:justify-start mt-8 max-w-md">
+					<!-- 検索ボックス -->
+					<div
+						class="flex gap-2 justify-center md:justify-start mt-8 max-w-md mx-auto md:mx-0"
+					>
 						<div class="flex-1 relative search-box rounded-full">
 							<input
 								type="text"
@@ -208,12 +225,7 @@
 			>
 				×
 			</button>
-			<a
-				href="#"
-				onclick="toggleMenu()"
-				class="hover:text-white transition-colors"
-				>HOME</a
-			>
+			<a href="index.html" class="hover:text-white transition-colors">HOME</a>
 			<a href="about.html" class="hover:text-white transition-colors">ABOUT</a>
 			<a
 				href="#latest"
@@ -231,21 +243,14 @@
 
 		<!-- メインコンテンツ -->
 		<main class="container mx-auto max-w-6xl px-6 py-16 flex-grow" id="latest">
-			<!-- 🏷️ カテゴリ一覧エリア (Update!) -->
-			<!-- ✨ ここ変更！ pb-4 を py-4 に変えて、上にも余白を作ったで！ -->
+			<!-- カテゴリ一覧 -->
 			<div class="mb-12 overflow-x-auto py-4">
 				<div class="flex gap-3 md:justify-center min-w-max" id="category-list">
-					<!-- ここにJSでボタンが追加されるよ！ -->
-					<button
-						class="category-btn active border-2 border-omu-egg bg-omu-egg text-white px-5 py-2 rounded-full font-bold text-sm shadow-sm"
-					>
-						All
-					</button>
-					<!-- 他のカテゴリボタンはJSで生成 -->
+					<!-- JSで生成 -->
 				</div>
 			</div>
 
-			<!-- セクションタイトル (検索結果とかを表示) -->
+			<!-- セクションタイトル -->
 			<div class="text-center mb-12">
 				<span
 					class="text-omu-ketchup font-bold tracking-widest text-sm uppercase"
@@ -267,14 +272,12 @@
 				id="blog-posts-container"
 				class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 min-h-[200px]"
 			>
-				<div class="col-span-full text-center text-gray-400">
-					読み込み中...🍳
-				</div>
+				<!-- JSで生成 -->
 			</div>
 
-			<!-- 📖 ページネーション (New!) -->
+			<!-- ページネーション -->
 			<div
-				class="flex justify-center items-center gap-6 mt-16"
+				class="flex justify-center items-center gap-6 mt-16 hidden"
 				id="pagination-area"
 			>
 				<button
@@ -334,7 +337,9 @@
 							</h6>
 							<ul class="space-y-2 text-sm opacity-80">
 								<li>
-									<a href="#" class="hover:text-omu-egg transition-colors"
+									<a
+										href="index.html"
+										class="hover:text-omu-egg transition-colors"
 										>Home</a
 									>
 								</li>
@@ -362,6 +367,8 @@
 			</div>
 		</footer>
 
+		<!-- ✨ 順番大事！config.js を先に読む！ -->
+		<script src="js/config.js"></script>
 		<script src="js/script.js"></script>
 	</body>
 </html>

@@ -8,6 +8,7 @@ body {
 	background-color: #faf9f6;
 	color: #5d4037;
 	animation: fadeIn 0.8s ease-out;
+	transition: background-color 0.3s, color 0.3s; /* 色の切り替えをふわっと */
 }
 
 /* ヘッダーのなみなみ装飾 */
@@ -132,7 +133,7 @@ body {
 }
 
 /* =========================================
-   📑 目次 (New!)
+   📑 目次
    ========================================= */
 .toc-container {
 	background-color: #fff9e5; /* 薄い卵色 */
@@ -199,7 +200,6 @@ body {
 	padding-bottom: 0.5rem;
 	border-bottom: 3px dashed #ffd966; /* オムライス色の点線 */
 	color: #5d4037;
-	/* スクロールした時にヘッダーに隠れないように調整 */
 	scroll-margin-top: 100px;
 }
 
@@ -306,20 +306,18 @@ body {
    💻 テック記事用のデザイン (Prism.js + Copy Button)
    ========================================= */
 
-/* コードブロックの親要素（ボタン配置用） */
 .code-block-wrapper {
 	position: relative;
 	margin: 2rem 0;
 }
 
-/* Prism.js */
 pre {
 	background-color: #2d2d2d;
 	color: #ccc;
 	padding: 1.5rem;
 	border-radius: 0.8rem;
 	overflow-x: auto;
-	margin: 0; /* wrapperでマージン取るので0に */
+	margin: 0;
 	font-family: 'Menlo', 'Monaco', 'Consolas', monospace;
 	font-size: 0.9rem;
 	line-height: 1.6;
@@ -327,7 +325,6 @@ pre {
 	box-shadow: 4px 4px 0px rgba(93, 64, 55, 0.1);
 }
 
-/* インラインコード */
 :not(pre) > code {
 	background-color: #fff4c1;
 	color: #d35400;
@@ -339,7 +336,6 @@ pre {
 	border: 1px solid #ffd966;
 }
 
-/* ✨ コピーボタン (New!) */
 .copy-code-btn {
 	position: absolute;
 	top: 10px;
@@ -361,10 +357,276 @@ pre {
 }
 
 /* =========================================
-   ✨ ローディングアニメーション
+   🛍️ 商品紹介カード
    ========================================= */
+.affiliate-card {
+	display: flex;
+	align-items: center;
+	background-color: #fff;
+	border: 2px solid #ffd966; /* オムライス色の枠線 */
+	border-radius: 20px;
+	padding: 1.5rem;
+	margin: 2rem 0;
+	box-shadow: 0 4px 10px rgba(93, 64, 55, 0.05);
+	gap: 1.5rem;
+}
+.aff-img {
+	flex-shrink: 0;
+	width: 120px;
+	height: 120px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #fff;
+	border-radius: 10px;
+	overflow: hidden;
+}
+.aff-img img {
+	max-width: 100%;
+	max-height: 100%;
+	object-fit: contain;
+	margin: 0 !important;
+	box-shadow: none !important;
+	border: none !important;
+}
+.aff-content {
+	flex-grow: 1;
+}
+.aff-title {
+	font-weight: bold;
+	font-size: 1.1rem;
+	margin-bottom: 1rem;
+	line-height: 1.4;
+	color: #5d4037;
+}
+.aff-btns {
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+.aff-btn {
+	display: inline-block;
+	padding: 0.5rem 1.5rem;
+	border-radius: 999px;
+	font-size: 0.9rem;
+	font-weight: bold;
+	text-decoration: none !important;
+	transition: transform 0.2s;
+	color: white !important;
+}
+.aff-btn:hover {
+	transform: translateY(-2px);
+	opacity: 0.9;
+	color: white !important;
+	text-decoration: none !important;
+}
+.aff-btn.rakuten {
+	background-color: #bf0000;
+	box-shadow: 0 4px 10px rgba(191, 0, 0, 0.2);
+}
+.aff-btn.amazon {
+	background-color: #ff9900;
+	box-shadow: 0 4px 10px rgba(255, 153, 0, 0.2);
+}
+.aff-btn.green {
+	background-color: #00b900;
+	box-shadow: 0 4px 10px rgba(0, 185, 0, 0.2);
+}
 
-/* フライパンを振る動き */
+@media (max-width: 640px) {
+	.affiliate-card {
+		flex-direction: column;
+		text-align: center;
+	}
+	.aff-btns {
+		justify-content: center;
+	}
+}
+
+/* =========================================
+   🔗 リンクカード (Fix!)
+   ========================================= */
+.link-card {
+	border: 1px solid #e5e7eb;
+	border-radius: 12px;
+	display: flex;
+	text-decoration: none !important;
+	overflow: hidden;
+	transition: all 0.3s;
+	background: #fff;
+	margin: 2rem 0;
+	height: 130px; /* 固定高さにして崩れ防止！ */
+}
+.link-card:hover {
+	border-color: #ffd966;
+	box-shadow: 0 4px 12px rgba(255, 217, 102, 0.2);
+	transform: translateY(-2px);
+}
+.lc-content {
+	padding: 1rem 1.5rem;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	min-width: 0; /* Flexbox内での文字溢れ防止 */
+}
+.lc-title {
+	font-weight: bold;
+	color: #333;
+	font-size: 1.05rem;
+	margin-bottom: 0.4rem;
+	line-height: 1.4;
+	/* 1行で省略 */
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.lc-desc {
+	font-size: 0.85rem;
+	color: #777;
+	line-height: 1.5;
+	/* 2行で省略 */
+	display: -webkit-box;
+	line-clamp: 2;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	margin-bottom: 0.5rem;
+}
+.lc-meta {
+	font-size: 0.75rem;
+	color: #999;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	margin-top: auto; /* 下に寄せる */
+}
+.lc-img {
+	width: 200px;
+	height: 100%;
+	background-size: cover;
+	background-position: center;
+	background-color: #f5f5f5;
+	flex-shrink: 0;
+	border-left: 1px solid #f0f0f0;
+}
+/* 画像がない場合 */
+.lc-img:empty {
+	display: none;
+}
+
+@media (max-width: 640px) {
+	.link-card {
+		height: auto;
+		flex-direction: column-reverse;
+	}
+	.lc-img {
+		width: 100%;
+		height: 150px;
+		border-left: none;
+		border-bottom: 1px solid #f0f0f0;
+	}
+	.lc-title {
+		white-space: normal;
+	} /* スマホでは折り返す */
+}
+
+/* =========================================
+   🌙 ダークモード
+   ========================================= */
+body.dark {
+	background-color: #2d2d2d; /* デミグラスソースより深い色 */
+	color: #f0f0f0;
+}
+
+body.dark .bg-white {
+	background-color: #3a3a3a; /* カードの背景 */
+	color: #f0f0f0;
+	border-color: #4a4a4a;
+}
+
+body.dark .text-omu-demi {
+	color: #f0f0f0; /* 文字色を白っぽく */
+}
+
+body.dark .wavy-bottom {
+	background-color: #d4ac2b; /* 黄色を少し落ち着かせる */
+}
+
+/* 記事内の調整 */
+body.dark #post-body {
+	color: #e0e0e0;
+}
+body.dark #post-body h2,
+body.dark #post-body h3 {
+	color: #ffd966; /* 見出しは明るい黄色で目立たせる */
+}
+body.dark #post-body h3 {
+	background-color: #444; /* h3の背景を暗く */
+	border-left-color: #ffd966;
+}
+body.dark #post-body blockquote {
+	background-color: #333;
+	color: #aaa;
+	border-left-color: #666;
+}
+body.dark #post-body strong {
+	background: linear-gradient(
+		transparent 60%,
+		#5d4037 60%
+	); /* マーカーを茶色っぽく */
+	color: #ffd966;
+}
+body.dark .toc-container {
+	background-color: #3a3a3a;
+	border-color: #666;
+}
+body.dark .toc-title,
+body.dark .toc-list a {
+	color: #ffd966 !important;
+}
+
+/* 商品カードのダーク対応 */
+body.dark .affiliate-card {
+	background-color: #3a3a3a;
+	border-color: #666;
+}
+body.dark .aff-img {
+	background-color: #fff; /* 画像の背景は白のままが見やすい */
+}
+body.dark .aff-title {
+	color: #f0f0f0;
+}
+
+/* リンクカードのダーク対応 */
+body.dark .link-card {
+	background-color: #3a3a3a;
+	border-color: #555;
+}
+body.dark .link-card:hover {
+	border-color: #ffd966;
+}
+body.dark .lc-title {
+	color: #f0f0f0;
+}
+body.dark .lc-desc {
+	color: #aaa;
+}
+body.dark .lc-img {
+	border-color: #555;
+}
+
+/* 検索ボックス */
+body.dark .search-box input {
+	background-color: #3a3a3a;
+	color: #f0f0f0;
+	border-color: #555;
+}
+body.dark .search-box input::placeholder {
+	color: #888;
+}
+
+/* ローディングアニメーション */
 @keyframes pan-flip {
 	0%,
 	100% {
@@ -381,7 +643,6 @@ pre {
 	}
 }
 
-/* 湯気が出る動き */
 @keyframes steam {
 	0% {
 		transform: translateY(0) scale(1);
@@ -417,19 +678,18 @@ pre {
 	left: 70%;
 }
 
-/* ローディングコンテナ */
 .loading-container {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 	padding: 4rem 0;
-	color: #ffd966; /* オムライス色 */
+	color: #ffd966;
 }
 .loading-text {
 	margin-top: 1rem;
 	font-weight: bold;
-	color: #5d4037; /* デミグラス色 */
+	color: #5d4037;
 	font-size: 0.9rem;
 	letter-spacing: 0.1em;
 	animation: pulse 1.5s infinite;
