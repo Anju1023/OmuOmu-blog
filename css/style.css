@@ -68,316 +68,25 @@ body {
 }
 
 /* =========================================
-   ✨ スクロールアニメーション
-   ========================================= */
-@keyframes fadeIn {
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 1;
-	}
-}
-.animate-fade-in {
-	animation: fadeIn 0.8s ease-out forwards;
-}
-
-.scroll-fade-up {
-	opacity: 0;
-	transform: translateY(40px);
-	transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.scroll-fade-up.is-show {
-	opacity: 1;
-	transform: translateY(0);
-}
-
-/* =========================================
-   🔍 検索・カテゴリ・ページネーション
-   ========================================= */
-
-/* 検索ボックス */
-.search-box {
-	transition: all 0.3s;
-}
-.search-box:focus-within {
-	box-shadow: 0 0 0 3px rgba(255, 217, 102, 0.5); /* オムライス色の光 */
-	border-color: #ffd966;
-}
-
-/* カテゴリボタン */
-.category-btn {
-	transition: all 0.2s;
-	white-space: nowrap; /* 折り返さない */
-}
-.category-btn:hover {
-	transform: translateY(-2px);
-}
-.category-btn.active {
-	background-color: #ff6b6b; /* 選択中はケチャップ色 */
-	color: white;
-	border-color: #ff6b6b;
-}
-
-/* ページネーションボタン */
-.pagination-btn {
-	transition: all 0.2s;
-}
-.pagination-btn:hover:not(:disabled) {
-	background-color: #ffd966;
-	color: #5d4037;
-}
-.pagination-btn:disabled {
-	opacity: 0.5;
-	cursor: not-allowed;
-}
-
-/* =========================================
-   📑 目次
-   ========================================= */
-.toc-container {
-	background-color: #fff9e5; /* 薄い卵色 */
-	border: 1px dashed #ffd966; /* 枠線を少し細く */
-	border-radius: 12px; /* 角丸も少し抑えめに */
-	padding: 1.5rem;
-	margin-bottom: 3rem;
-	transition: background-color 0.3s, border-color 0.3s;
-}
-.toc-title {
-	font-weight: bold;
-	color: #5d4037;
-	margin-bottom: 1rem;
-	display: flex;
-	align-items: center;
-	gap: 0.5rem;
-}
-.toc-list {
-	list-style: none !important;
-	padding-left: 0 !important;
-	margin: 0 !important;
-}
-.toc-list li {
-	margin-bottom: 0.5rem !important;
-	padding-left: 0 !important;
-}
-.toc-list li::before {
-	content: none !important; /* チェックマーク消す */
-}
-.toc-list a {
-	color: #5d4037 !important;
-	text-decoration: none !important;
-	transition: color 0.2s;
-	font-size: 0.95rem;
-}
-.toc-list a:hover {
-	color: #ff6b6b !important;
-	background-color: transparent !important;
-	text-decoration: underline !important;
-}
-/* h3レベルのインデント */
-.toc-indent {
-	margin-left: 1.5rem;
-	font-size: 0.9rem;
-}
-
-/* =========================================
-   📝 記事本文のデザイン
-   ========================================= */
-
-/* 全体の行間など */
-#post-body {
-	line-height: 1.9;
-	font-size: 1.05rem;
-	color: #5d4037;
-}
-
-/* h2 見出し */
-#post-body h2 {
-	font-family: 'Kiwi Maru', serif;
-	font-size: 1.8rem;
-	font-weight: bold;
-	margin-top: 3.5rem;
-	margin-bottom: 1.5rem;
-	padding-bottom: 0.5rem;
-	border-bottom: 3px dashed #ffd966; /* オムライス色の点線 */
-	color: #5d4037;
-	scroll-margin-top: 100px;
-}
-
-/* h3 見出し */
-#post-body h3 {
-	font-size: 1.4rem;
-	font-weight: bold;
-	margin-top: 2.5rem;
-	margin-bottom: 1rem;
-	padding: 0.5rem 1rem;
-	background-color: #fff9e5; /* 薄い卵色 */
-	border-left: 5px solid #ffd966;
-	border-radius: 0 8px 8px 0; /* 少し角ばらせる */
-	color: #5d4037;
-	scroll-margin-top: 100px;
-}
-
-/* 段落 */
-#post-body p {
-	margin-bottom: 2rem;
-}
-
-/* 太字 */
-#post-body strong {
-	color: #ff6b6b; /* ケチャップ色 */
-	background: linear-gradient(
-		transparent 70%,
-		#fff4c1 70%
-	); /* 黄色いマーカー */
-	font-weight: bold;
-}
-
-/* 打ち消し線 */
-#post-body del {
-	color: #999;
-	text-decoration-thickness: 2px;
-}
-
-/* 区切り線 */
-#post-body hr {
-	border: 0;
-	border-top: 3px dashed #ffd966;
-	margin: 3rem 0;
-}
-
-/* 箇条書きリスト (ul) */
-#post-body ul {
-	margin-bottom: 2rem;
-	padding-left: 1.5rem;
-	list-style: disc;
-}
-#post-body ul li {
-	margin-bottom: 0.5rem;
-}
-
-/* 番号付きリスト (ol) */
-#post-body ol {
-	margin-bottom: 2rem;
-	padding-left: 1.5rem;
-	list-style: decimal;
-}
-#post-body ol li {
-	margin-bottom: 0.5rem;
-	padding-left: 0.5rem;
-}
-
-/* 画像 (img) */
-#post-body img {
-	max-width: 100%;
-	height: auto;
-	border-radius: 12px; /* 少し大人っぽく */
-	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-	margin: 2rem auto;
-	display: block;
-}
-
-/* 引用 (blockquote) */
-#post-body blockquote {
-	background-color: #f2f2f2;
-	padding: 1.5rem;
-	margin: 2rem 0;
-	border-left: 4px solid #ccc;
-	color: #666;
-	font-style: italic;
-	border-radius: 0 8px 8px 0;
-}
-
-/* リンク */
-#post-body a {
-	color: #ff6b6b;
-	text-decoration: underline;
-	text-underline-offset: 4px;
-	text-decoration-thickness: 2px;
-	transition: all 0.3s;
-}
-#post-body a:hover {
-	background-color: #ff6b6b;
-	color: white;
-	text-decoration: none;
-	border-radius: 4px;
-	padding: 0 4px;
-}
-
-/* =========================================
-   💻 テック記事用のデザイン (Prism.js + Copy Button)
-   ========================================= */
-
-.code-block-wrapper {
-	position: relative;
-	margin: 2rem 0;
-}
-
-pre {
-	background-color: #2d2d2d;
-	color: #ccc;
-	padding: 1.5rem;
-	border-radius: 8px; /* 少し四角く */
-	overflow-x: auto;
-	margin: 0;
-	font-family: 'Menlo', 'Monaco', 'Consolas', monospace;
-	font-size: 0.9rem;
-	line-height: 1.6;
-	border: 2px solid #ffd966; /* 枠線を細く */
-	box-shadow: 4px 4px 0px rgba(93, 64, 55, 0.1);
-}
-
-:not(pre) > code {
-	background-color: #fff4c1;
-	color: #d35400;
-	padding: 0.2rem 0.5rem;
-	border-radius: 4px;
-	font-family: 'Menlo', 'Monaco', 'Consolas', monospace;
-	font-size: 0.9em;
-	font-weight: bold;
-	border: 1px solid #ffd966;
-}
-
-.copy-code-btn {
-	position: absolute;
-	top: 10px;
-	right: 10px;
-	background-color: rgba(255, 255, 255, 0.1);
-	border: 1px solid rgba(255, 255, 255, 0.2);
-	color: #ccc;
-	padding: 4px 8px;
-	border-radius: 4px;
-	font-size: 0.75rem;
-	cursor: pointer;
-	transition: all 0.2s;
-	z-index: 10;
-}
-.copy-code-btn:hover {
-	background-color: #ffd966;
-	color: #5d4037;
-	border-color: #ffd966;
-}
-
-/* =========================================
-   🛍️ 商品紹介カード (脱AIデザイン！シンプルおしゃれver.)
+   🛍️ 商品紹介カード (完全固定・色だけ変化ver.)
    ========================================= */
 .affiliate-card {
 	display: flex;
 	align-items: center;
 	background-color: #fff;
-	border: 1px solid #e5e7eb; /* 全体を薄い線で囲むだけ！ */
-	border-radius: 12px; /* 角丸を少し柔らかく */
+	border: 1px solid #e5e7eb;
+	border-radius: 12px;
 	padding: 1.5rem;
 	margin: 2rem 0;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); /* 影は控えめに */
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 	gap: 1.5rem;
-	transition: all 0.3s ease;
+	/* ✨ transform（動き）を削除！色だけ変わるようにする */
+	transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 .affiliate-card:hover {
-	transform: translateY(-2px);
-	box-shadow: 0 8px 20px rgba(93, 64, 55, 0.1); /* ホバーでふわっと */
-	border-color: #ffd966; /* ホバーした時だけ枠線をオムライス色に！ */
+	/* transform: translateY(-2px);  ← これを削除！！動かない！！ */
+	box-shadow: 0 4px 12px rgba(93, 64, 55, 0.1); /* 影だけ少し濃く */
+	border-color: #ffd966;
 }
 .aff-img {
 	flex-shrink: 0;
@@ -389,7 +98,6 @@ pre {
 	background: #fff;
 	border-radius: 8px;
 	overflow: hidden;
-	/* 画像自体に薄い枠線をつけて引き締める */
 	border: 1px solid #f0f0f0;
 }
 .aff-img img {
@@ -408,7 +116,7 @@ pre {
 	font-size: 1.1rem;
 	margin-bottom: 1rem;
 	line-height: 1.5;
-	color: #5d4037; /* デミグラス色 */
+	color: #5d4037;
 }
 .aff-btns {
 	display: flex;
@@ -418,23 +126,24 @@ pre {
 .aff-btn {
 	display: inline-block;
 	padding: 0.5rem 1.5rem;
-	border-radius: 999px; /* 完全な丸みボタン */
+	border-radius: 999px;
 	font-size: 0.85rem;
 	font-weight: bold;
 	text-decoration: none !important;
-	transition: opacity 0.2s; /* ✨ 色の変化だけにする */
+	/* ✨ ここ重要！transformを消して、opacity（透明度）の変化だけにする */
+	transition: opacity 0.2s ease, background-color 0.2s ease;
 	color: white !important;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-/* ✨ 修正！動きをなくして透明度だけ変える */
 .aff-btn:hover {
-	transform: none; /* 動かさない */
-	opacity: 0.8; /* ちょっと薄くするだけ */
+	/* transform: translateY(-2px); ← 犯人はこいつやった！削除！！ */
+	transform: none !important; /* 絶対に動かさない！ */
+	opacity: 0.8; /* ちょっと薄くする */
 	color: white !important;
 	text-decoration: none !important;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 影もそのまま */
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 影も変えない */
 }
-/* 各ボタンの色はそのまま */
+/* 各ボタンの色 */
 .aff-btn.rakuten {
 	background-color: #bf0000;
 }
