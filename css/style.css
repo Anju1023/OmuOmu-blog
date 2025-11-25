@@ -470,31 +470,31 @@ pre {
 	justify-content: center;
 	min-width: 0;
 }
+/* ✨ spanでも箱として扱う！ */
 .lc-title {
-	display: block; /* ✨ ここ重要！spanでも箱として扱う */
+	display: block;
 	font-weight: bold;
 	color: #333;
 	font-size: 1.1rem;
 	margin-bottom: 0.5rem;
 	line-height: 1.4;
-	/* 1行で省略 */
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
+/* ✨ spanでも箱として扱う！ */
 .lc-desc {
-	display: block; /* ✨ ここも！ */
+	display: block;
 	font-size: 0.85rem;
 	color: #777;
 	line-height: 1.5;
-	/* 1行で省略 */
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	margin-bottom: 0.5rem;
 }
 .lc-meta {
-	display: flex; /* metaはflexのままでOK */
+	display: flex;
 	font-size: 0.75rem;
 	color: #999;
 	align-items: center;

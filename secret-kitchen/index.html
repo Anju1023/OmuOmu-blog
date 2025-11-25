@@ -55,6 +55,9 @@
 		<!-- ✨ 本番用CSSと、管理画面用CSSを読み込み！ -->
 		<link rel="stylesheet" href="../css/style.css" />
 		<link rel="stylesheet" href="style.css" />
+
+		<!-- ⚠️ ここにあった <style>...</style> は全部消したで！ -->
+		<!-- これで本番用CSSが正しく適用されるはずや！ -->
 	</head>
 	<body
 		class="flex flex-col min-h-screen text-omu-demi bg-gray-100 h-screen overflow-hidden"
@@ -73,7 +76,7 @@
 					Secret Kitchen
 					<span
 						class="text-xs bg-omu-blue text-white px-2 py-0.5 rounded-full ml-2"
-						>v5.2</span
+						>v5.3</span
 					>
 				</h1>
 			</div>
@@ -564,7 +567,7 @@
 		</div>
 
 		<!-- ✨ Config & Script 読み込み -->
-		<script src="config.js"></script>
+		<script src="../js/config.js"></script>
 		<script src="script.js"></script>
 	</body>
 </html>
