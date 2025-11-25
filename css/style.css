@@ -8,7 +8,7 @@ body {
 	background-color: #faf9f6;
 	color: #5d4037;
 	animation: fadeIn 0.8s ease-out;
-	transition: background-color 0.3s, color 0.3s; /* 色の切り替えをふわっと */
+	transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* ヘッダーのなみなみ装飾 */
@@ -18,6 +18,7 @@ body {
 	background-color: #ffd966;
 	border-bottom-left-radius: 30px;
 	border-bottom-right-radius: 30px;
+	transition: background-color 0.3s ease;
 }
 
 /* カードのホバーエフェクト */
@@ -141,6 +142,7 @@ body {
 	border-radius: 20px;
 	padding: 1.5rem;
 	margin-bottom: 3rem;
+	transition: background-color 0.3s, border-color 0.3s;
 }
 .toc-title {
 	font-weight: bold;
@@ -213,6 +215,7 @@ body {
 	background-color: #fff9e5; /* 薄い卵色 */
 	border-left: 5px solid #ffd966;
 	border-radius: 0 10px 10px 0;
+	color: #5d4037; /* 明示的に指定 */
 	scroll-margin-top: 100px;
 }
 
@@ -369,6 +372,7 @@ pre {
 	margin: 2rem 0;
 	box-shadow: 0 4px 10px rgba(93, 64, 55, 0.05);
 	gap: 1.5rem;
+	transition: background-color 0.3s, border-color 0.3s;
 }
 .aff-img {
 	flex-shrink: 0;
@@ -444,7 +448,7 @@ pre {
 }
 
 /* =========================================
-   🔗 リンクカード (Fix!)
+   🔗 リンクカード
    ========================================= */
 .link-card {
 	border: 1px solid #e5e7eb;
@@ -470,7 +474,6 @@ pre {
 	justify-content: center;
 	min-width: 0;
 }
-/* ✨ spanでも箱として扱う！ */
 .lc-title {
 	display: block;
 	font-weight: bold;
@@ -482,7 +485,6 @@ pre {
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
-/* ✨ spanでも箱として扱う！ */
 .lc-desc {
 	display: block;
 	font-size: 0.85rem;
@@ -518,7 +520,6 @@ pre {
 	border-left: 1px solid #f0f0f0;
 }
 
-/* スマホ対応 */
 @media (max-width: 640px) {
 	.link-card {
 		flex-direction: column-reverse;
@@ -536,32 +537,146 @@ pre {
 	}
 }
 
-/* ダークモード対応 */
-body.dark .link-card {
-	background-color: #3a3a3a;
+/* =========================================
+   🌙 ダークモード (Re-Designed!)
+   ========================================= */
+body.dark {
+	/* ベース背景: 落ち着いたダークグレー */
+	background-color: #202023;
+	color: #ededed;
+}
+
+/* ヘッダー */
+body.dark header,
+body.dark .bg-white {
+	background-color: #2b2b2e; /* カードやヘッダーはベースより少し明るく */
+	border-color: #3a3a3a;
+	color: #ededed;
+}
+
+body.dark .wavy-bottom {
+	background-color: #f0b608; /* 黄色を少し濃くして眩しさを抑える */
+}
+
+/* テキストカラー調整 */
+body.dark .text-omu-demi {
+	color: #ededed;
+}
+body.dark .text-gray-500 {
+	color: #aaa;
+}
+body.dark .text-gray-400 {
+	color: #888;
+}
+
+/* カードホバー時の影を光彩っぽく */
+body.dark .blog-card:hover {
+	box-shadow: 0 10px 25px rgba(255, 217, 102, 0.1);
+}
+
+/* 記事本文エリア */
+body.dark #post-body {
+	color: #e0e0e0;
+}
+body.dark #post-body h2 {
+	color: #ffd966; /* 見出しは明るい黄色でアクセント */
+	border-bottom-color: #ffd966;
+}
+body.dark #post-body h3 {
+	background-color: #38383b; /* 暗めの背景 */
+	border-left-color: #ffd966;
+	color: #ffd966;
+}
+body.dark #post-body strong {
+	background: linear-gradient(
+		transparent 60%,
+		rgba(255, 107, 107, 0.4) 60%
+	); /* ケチャップ色マーカーを控えめに */
+	color: #ff8e8e; /* 文字も少し明るい赤に */
+}
+body.dark #post-body a {
+	color: #ff8e8e; /* リンクも見やすい赤に */
+}
+body.dark #post-body a:hover {
+	background-color: #ff6b6b;
+	color: #fff;
+}
+body.dark #post-body blockquote {
+	background-color: #252528;
+	color: #bbb;
+	border-left-color: #555;
+}
+
+/* 目次 */
+body.dark .toc-container {
+	background-color: #252528;
 	border-color: #555;
+}
+body.dark .toc-title,
+body.dark .toc-list a {
+	color: #ffd966 !important;
+}
+
+/* 商品カード */
+body.dark .affiliate-card {
+	background-color: #2b2b2e;
+	border-color: #555;
+	box-shadow: none;
+}
+body.dark .aff-title {
+	color: #ededed;
+}
+body.dark .aff-img {
+	background-color: #fff; /* 商品画像は白背景の方が見やすい */
+}
+
+/* リンクカード */
+body.dark .link-card {
+	background-color: #2b2b2e;
+	border-color: #444;
 }
 body.dark .link-card:hover {
 	border-color: #ffd966;
+	box-shadow: 0 4px 12px rgba(255, 217, 102, 0.1);
 }
 body.dark .lc-title {
-	color: #f0f0f0;
+	color: #ededed;
 }
 body.dark .lc-desc {
 	color: #aaa;
 }
 body.dark .lc-img {
-	border-color: #555;
+	border-color: #444;
 }
 
 /* 検索ボックス */
 body.dark .search-box input {
-	background-color: #3a3a3a;
-	color: #f0f0f0;
-	border-color: #555;
+	background-color: #2b2b2e;
+	color: #ededed;
+	border-color: #444;
 }
 body.dark .search-box input::placeholder {
-	color: #888;
+	color: #777;
+}
+body.dark .search-box:focus-within {
+	box-shadow: 0 0 0 3px rgba(255, 217, 102, 0.3);
+}
+
+/* コードブロック */
+body.dark pre {
+	border-color: #555;
+	box-shadow: none;
+}
+body.dark :not(pre) > code {
+	background-color: #38383b;
+	color: #ffd966;
+	border-color: #555;
+}
+
+/* フッター */
+body.dark footer {
+	background-color: #1a1a1d; /* ヘッダーより少し暗く */
+	color: #ccc;
 }
 
 /* ローディングアニメーション */
@@ -631,6 +746,9 @@ body.dark .search-box input::placeholder {
 	font-size: 0.9rem;
 	letter-spacing: 0.1em;
 	animation: pulse 1.5s infinite;
+}
+body.dark .loading-text {
+	color: #ffd966;
 }
 @keyframes pulse {
 	0%,
